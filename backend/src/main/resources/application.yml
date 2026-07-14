@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: nutriscan-api
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/nutriscan}
+    username: ${SPRING_DATASOURCE_USERNAME:nutriscan}
+    password: ${SPRING_DATASOURCE_PASSWORD:nutriscan_dev}
+  jpa:
+    hibernate:
+      ddl-auto: validate            # el esquema lo gobierna Flyway
+    open-in-view: false
+  flyway:
+    enabled: true
+  data:
+    redis:
+      host: ${SPRING_DATA_REDIS_HOST:localhost}
+      port: 6379
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 12MB
+
+nutriscan:
+  jwt:
+    secret: ${NUTRISCAN_JWT_SECRET:change-me-in-production-256-bits-minimum-secret!!}
+    access-ttl-minutes: 30
+    refresh-ttl-days: 30
+  ai:
+    provider: ${NUTRISCAN_AI_PROVIDER:openai}   # openai | gemini
+    openai:
+      api-key: ${OPENAI_API_KEY:}
+      model: gpt-4o
+    gemini:
+      api-key: ${GEMINI_API_KEY:}
+      model: gemini-2.0-flash
+  free-tier:
+    daily-scan-limit: 3             # escaneos IA/día para usuarios gratuitos
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+
+server:
+  error:
+    include-stacktrace: never       # no filtrar detalles internos (seguridad)

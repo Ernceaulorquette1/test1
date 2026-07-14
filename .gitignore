@@ -1,0 +1,25 @@
+# Java / Maven
+backend/target/
+*.class
+*.jar
+!backend/.mvn/wrapper/maven-wrapper.jar
+
+# Flutter / Dart
+mobile/.dart_tool/
+mobile/build/
+mobile/.flutter-plugins*
+mobile/.packages
+mobile/android/.gradle/
+mobile/ios/Pods/
+
+# Secretos y entorno
+.env
+*.local
+firebase-service-account.json
+k8s/secrets.yaml
+
+# IDE / SO
+.idea/
+.vscode/
+*.iml
+.DS_Store
