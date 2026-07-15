@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nutriscan-config
+  namespace: nutriscan
+data:
+  SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/nutriscan
+  SPRING_DATASOURCE_USERNAME: nutriscan
+  SPRING_DATA_REDIS_HOST: redis
+  NUTRISCAN_AI_PROVIDER: openai

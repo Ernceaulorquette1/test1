@@ -1,0 +1,31 @@
+# HTTPS terminado en el balanceador de Google Cloud con certificado gestionado
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: nutriscan-cert
+  namespace: nutriscan
+spec:
+  domains:
+    - api.nutriscan.ai
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nutriscan-ingress
+  namespace: nutriscan
+  annotations:
+    kubernetes.io/ingress.class: gce
+    networking.gke.io/managed-certificates: nutriscan-cert
+    kubernetes.io/ingress.allow-http: "false"   # solo HTTPS
+spec:
+  rules:
+    - host: api.nutriscan.ai
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nutriscan-api
+                port:
+                  number: 80

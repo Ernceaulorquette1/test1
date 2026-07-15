@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nutriscan-api
+  namespace: nutriscan
+  labels:
+    app: nutriscan-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nutriscan-api
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: nutriscan-api
+    spec:
+      containers:
+        - name: api
+          # Publicada por CI en Artifact Registry (Google Cloud)
+          image: southamerica-west1-docker.pkg.dev/PROJECT_ID/nutriscan/nutriscan-api:1.0.0
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: nutriscan-config
+            - secretRef:
+                name: nutriscan-secrets
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 40
+            periodSeconds: 15
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nutriscan-api
+  namespace: nutriscan
+spec:
+  selector:
+    app: nutriscan-api
+  ports:
+    - port: 80
+      targetPort: 8080
