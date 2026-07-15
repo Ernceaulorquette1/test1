@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -19,6 +21,48 @@ class PremiumScreen extends ConsumerStatefulWidget {
 class _PremiumScreenState extends ConsumerState<PremiumScreen> {
   String _selected = PremiumScreen.annualId;
   bool _busy = false;
+  StreamSubscription<List<PurchaseDetails>>? _purchases;
+
+  @override
+  void initState() {
+    super.initState();
+    // Cierre del flujo de compra: Google Play confirma por purchaseStream,
+    // el backend valida el token y activa Premium.
+    _purchases = InAppPurchase.instance.purchaseStream.listen((updates) async {
+      for (final purchase in updates) {
+        if (purchase.status == PurchaseStatus.purchased ||
+            purchase.status == PurchaseStatus.restored) {
+          final plan = purchase.productID == PremiumScreen.monthlyId
+              ? 'MONTHLY'
+              : 'ANNUAL';
+          try {
+            await ref.read(subscriptionRepositoryProvider).verify(
+                plan, purchase.verificationData.serverVerificationData);
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text('¡Bienvenido a NutriScan Premium! 👑')));
+              Navigator.of(context).maybePop();
+            }
+          } catch (_) {
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content:
+                      Text('Compra recibida, pero no se pudo activar. Reintenta.')));
+            }
+          }
+        }
+        if (purchase.pendingCompletePurchase) {
+          await InAppPurchase.instance.completePurchase(purchase);
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _purchases?.cancel();
+    super.dispose();
+  }
 
   static const _benefits = [
     'Análisis ilimitados con IA',

@@ -1,6 +1,7 @@
 package ai.nutriscan.web;
 
 import ai.nutriscan.application.service.NotFoundException;
+import ai.nutriscan.domain.billing.PlayPurchaseVerifier.InvalidPurchaseException;
 import ai.nutriscan.application.service.QuotaExceededException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +37,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> quota(QuotaExceededException e) {
         return ResponseEntity.status(HttpStatus.PAYMENT_REQUIRED)
                 .body(ApiError.of(HttpStatus.PAYMENT_REQUIRED, e.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidPurchaseException.class)
+    public ResponseEntity<ApiError> invalidPurchase(InvalidPurchaseException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiError.of(HttpStatus.BAD_REQUEST, e.getMessage()));
     }
 
     @ExceptionHandler(BadCredentialsException.class)

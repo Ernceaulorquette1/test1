@@ -33,6 +33,11 @@ nutriscan:
     gemini:
       api-key: ${GEMINI_API_KEY:}
       model: gemini-2.0-flash
+  billing:
+    mode: ${NUTRISCAN_BILLING_MODE:dev}      # play (verificación real) | dev
+    package-name: ${NUTRISCAN_PACKAGE_NAME:ai.nutriscan.app}
+  notifications:
+    enabled: ${NUTRISCAN_NOTIFICATIONS_ENABLED:false}
   free-tier:
     daily-scan-limit: 3             # escaneos IA/día para usuarios gratuitos
 

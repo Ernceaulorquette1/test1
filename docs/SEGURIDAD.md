@@ -16,6 +16,9 @@
 | Exposición de datos | `include-stacktrace: never`, handler global de errores con mensajes genéricos |
 | Dependencias vulnerables | CI con build reproducible; revisión de dependencias en cada release |
 
+## Facturación
+- Los purchase tokens de Google Play se **verifican en el servidor** (`purchases.subscriptionsv2.get`) antes de activar Premium: un cliente manipulado no puede autoconcederse la suscripción. El modo `dev` (sin verificación) queda restringido a entornos de staging.
+
 ## Cifrado
 - **En tránsito**: HTTPS extremo a extremo (certificado gestionado de Google en el Ingress; `allow-http: false`).
 - **En reposo**: discos cifrados por defecto en Google Cloud (AES-256); secretos fuera del código (`Secret` de Kubernetes / Secret Manager); fotos en Firebase Storage con reglas por usuario.

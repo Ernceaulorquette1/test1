@@ -42,6 +42,9 @@ flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8080
 | `NUTRISCAN_AI_PROVIDER` | `openai` o `gemini` (modelo intercambiable) |
 | `OPENAI_API_KEY` / `GEMINI_API_KEY` | Credenciales de IA |
 | `GOOGLE_APPLICATION_CREDENTIALS` | Service account Firebase (local); en GKE usar Workload Identity |
+| `NUTRISCAN_BILLING_MODE` | `play` = verificación real contra Google Play Developer API; `dev` = sin validación externa (solo staging) |
+| `NUTRISCAN_PACKAGE_NAME` | Package de la app en Play Console (para verificar compras) |
+| `NUTRISCAN_NOTIFICATIONS_ENABLED` | `true` activa recordatorios push FCM (agua y cena) |
 
 ## 4. Cambiar el proveedor de IA
 El puerto `ai.nutriscan.domain.ai.VisionProvider` desacopla el negocio del modelo:
@@ -54,6 +57,9 @@ Ver `k8s/README.md`. Resumen: build de imagen → Artifact Registry → `kubectl
 ## 6. Publicación en Google Play
 1. `flutter build appbundle --release` (firmar con keystore propio).
 2. Crear los productos de suscripción `nutriscan_premium_monthly` y `nutriscan_premium_annual` en Play Console.
+   En producción configurar `NUTRISCAN_BILLING_MODE=play`: el backend valida cada purchase token
+   contra `purchases.subscriptionsv2.get` (requiere service account con rol "Ver información
+   financiera" vinculada en Play Console).
 3. Completar Data Safety (se recopilan: email, medidas corporales, fotos de comidas — cifradas en tránsito; eliminables bajo demanda).
 4. Pruebas internas → cerradas → producción escalonada (10% → 50% → 100%).
 
