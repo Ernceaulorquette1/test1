@@ -23,7 +23,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       await action();
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('No se pudo iniciar sesión. Revisa tus datos.'),
             behavior: SnackBarBehavior.floating));
       }
@@ -96,11 +96,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     onPressed: _busy || _email.text.isEmpty
                         ? null
                         : () => _run(() async {
+                              final messenger = ScaffoldMessenger.of(context);
                               await session.sendPasswordReset(_email.text.trim());
-                              if (mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                    content: Text('Correo de recuperación enviado')));
-                              }
+                              messenger.showSnackBar(const SnackBar(
+                                  content: Text('Correo de recuperación enviado')));
                             }),
                     child: const Text('¿Olvidaste tu contraseña?'),
                   ),

@@ -72,7 +72,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
               const SizedBox(width: 16),
               Expanded(
                 child: DropdownButtonFormField<String>(
-                  value: _sex,
+                  initialValue: _sex,
                   decoration: const InputDecoration(labelText: 'Sexo'),
                   items: const [
                     DropdownMenuItem(value: 'MALE', child: Text('Masculino')),
@@ -101,7 +101,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
             ]),
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
-              value: _activity,
+              initialValue: _activity,
               decoration: const InputDecoration(labelText: 'Nivel de actividad'),
               items: const [
                 DropdownMenuItem(value: 'SEDENTARY', child: Text('Sedentario')),
@@ -114,7 +114,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
-              value: _goal,
+              initialValue: _goal,
               decoration: const InputDecoration(labelText: 'Objetivo'),
               items: const [
                 DropdownMenuItem(value: 'LOSE_WEIGHT', child: Text('Perder peso')),
