@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:nutriscan;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE
+    username: sa
+    password: ""
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop     # en tests el esquema lo genera Hibernate (H2)
+  flyway:
+    enabled: false
+
+nutriscan:
+  jwt:
+    secret: clave-de-pruebas-suficientemente-larga-para-hs256!!
+    access-ttl-minutes: 30
+    refresh-ttl-days: 30
+  ai:
+    provider: openai
+    openai:
+      api-key: test
+      model: test
+    gemini:
+      api-key: test
+      model: test
+  billing:
+    mode: dev
+    package-name: ai.nutriscan.test
+  notifications:
+    enabled: false
+  free-tier:
+    daily-scan-limit: 3

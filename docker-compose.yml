@@ -1,0 +1,47 @@
+services:
+  api:
+    build: ./backend
+    container_name: nutriscan-api
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/nutriscan
+      SPRING_DATASOURCE_USERNAME: nutriscan
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-nutriscan_dev}
+      SPRING_DATA_REDIS_HOST: redis
+      NUTRISCAN_JWT_SECRET: ${JWT_SECRET:-change-me-in-production-256-bits-minimum-secret!!}
+      NUTRISCAN_AI_PROVIDER: ${AI_PROVIDER:-openai}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    container_name: nutriscan-db
+    environment:
+      POSTGRES_DB: nutriscan
+      POSTGRES_USER: nutriscan
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-nutriscan_dev}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nutriscan"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: nutriscan-redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  pgdata:
