@@ -1,0 +1,1374 @@
+<title>Demos web — 30 negocios Chile</title>
+<style>
+  :root {
+    --fondo:#f4f5f7; --tinta:#1b1f27; --tinta2:#5b6472; --panel:#ffffff;
+    --borde:#e3e6ea; --marca:#0e5a4a; --marca-suave:#e7f1ee;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --fondo:#14171c; --tinta:#e8eaee; --tinta2:#9aa3af; --panel:#1d2129;
+            --borde:#2b303a; --marca:#4fae95; --marca-suave:#1e2c28; }
+  }
+  :root[data-theme="dark"] { --fondo:#14171c; --tinta:#e8eaee; --tinta2:#9aa3af; --panel:#1d2129;
+            --borde:#2b303a; --marca:#4fae95; --marca-suave:#1e2c28; }
+  :root[data-theme="light"] { --fondo:#f4f5f7; --tinta:#1b1f27; --tinta2:#5b6472; --panel:#ffffff;
+            --borde:#e3e6ea; --marca:#0e5a4a; --marca-suave:#e7f1ee; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI', system-ui, -apple-system, sans-serif; background:var(--fondo); color:var(--tinta); line-height:1.6; }
+
+  /* ---------- Catálogo ---------- */
+  #catalogo { max-width:62rem; margin:0 auto; padding:2.5rem 1.5rem 4rem; }
+  .cabecera { padding:1rem 0 2rem; border-bottom:1px solid var(--borde); margin-bottom:1.5rem; }
+  .cabecera .kicker { text-transform:uppercase; letter-spacing:.18em; font-size:.75rem; color:var(--marca); font-weight:700; }
+  .cabecera h1 { font-size:1.9rem; letter-spacing:-.02em; text-wrap:balance; margin:.4rem 0; }
+  .cabecera p { color:var(--tinta2); max-width:42rem; }
+  .zona { font-size:.8rem; text-transform:uppercase; letter-spacing:.14em; color:var(--tinta2); margin:2rem 0 .8rem; }
+  .grilla { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:.8rem; }
+  .tarjeta { display:flex; gap:.8rem; align-items:flex-start; background:var(--panel); border:1px solid var(--borde);
+             border-radius:.8rem; padding:1rem; text-decoration:none; color:inherit; transition:border-color .15s, transform .15s; }
+  .tarjeta:hover, .tarjeta:focus-visible { border-color:var(--marca); transform:translateY(-1px); }
+  .t-icono { font-size:1.5rem; background:var(--marca-suave); border-radius:.6rem; padding:.35rem .5rem; }
+  .t-info { display:flex; flex-direction:column; gap:.1rem; }
+  .t-info strong { font-size:.98rem; }
+  .t-meta { font-size:.8rem; color:var(--tinta2); }
+  .t-tel { font-size:.85rem; color:var(--marca); font-weight:600; font-variant-numeric:tabular-nums; }
+  .aviso { margin-top:2.5rem; font-size:.8rem; color:var(--tinta2); border-top:1px solid var(--borde); padding-top:1rem; }
+
+  /* ---------- Demos (diseño fijo claro: son maquetas de sitios reales) ---------- */
+  .demo { background:#fff; color:#1f2937; min-height:100vh; }
+  .volver { position:fixed; top:.6rem; left:.6rem; z-index:10; background:#111827; color:#fff; text-decoration:none;
+            font-size:.85rem; padding:.4rem .9rem; border-radius:999px; opacity:.92; }
+  .demo-banner { background:#111827; color:#fbbf24; text-align:center; font-size:.8rem; padding:.4rem 4.5rem; }
+  .demo-hero { background:linear-gradient(135deg, var(--color) 0%, color-mix(in srgb, var(--color) 60%, black) 100%);
+               color:#fff; padding:4.5rem 1.5rem 5rem; text-align:center; }
+  .demo-hero .icono { font-size:3.5rem; }
+  .demo-hero h1 { font-size:2.6rem; margin:.5rem 0 .3rem; letter-spacing:-.02em; text-wrap:balance; }
+  .demo-hero .ciudad { font-size:1.05rem; opacity:.85; text-transform:uppercase; letter-spacing:.15em; }
+  .demo-hero .tagline { max-width:38rem; margin:1.2rem auto 2rem; font-size:1.2rem; opacity:.95; }
+  .cta { display:inline-block; background:var(--acento); color:#fff; text-decoration:none; font-weight:700;
+         padding:.9rem 2.2rem; border-radius:999px; font-size:1.05rem; box-shadow:0 6px 20px rgb(0 0 0 / .25); transition:transform .15s; }
+  .cta:hover { transform:translateY(-2px); }
+  .demo section { padding:3.5rem 1.5rem; max-width:64rem; margin:0 auto; }
+  .demo h2 { text-align:center; font-size:1.9rem; color:var(--color); margin-bottom:2rem; }
+  .servicios { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:1.4rem; }
+  .demo .card { background:#f9fafb; border:1px solid #e5e7eb; border-radius:1rem; padding:1.6rem; }
+  .demo .card h3 { color:var(--color); margin-bottom:.5rem; font-size:1.15rem; }
+  .franja { background:color-mix(in srgb, var(--acento) 12%, white); }
+  .franja .inner { max-width:64rem; margin:0 auto; padding:3rem 1.5rem; text-align:center; }
+  .franja p { max-width:44rem; margin:0 auto; font-size:1.1rem; }
+  .contacto { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:1.2rem; text-align:center; }
+  .contacto .item { padding:1.4rem; border-radius:1rem; background:#f9fafb; border:1px solid #e5e7eb; }
+  .contacto .item strong { display:block; color:var(--color); margin-bottom:.4rem; }
+  .contacto a { color:var(--color); font-weight:600; text-decoration:none; word-break:break-word; }
+  .contacto a:hover { text-decoration:underline; }
+  .demo-footer { background:#111827; color:#9ca3af; text-align:center; font-size:.85rem; padding:1.6rem 1rem; }
+  .demo-footer strong { color:#e5e7eb; }
+  @media (max-width:600px) { .demo-hero h1 { font-size:2rem; } }
+  @media (prefers-reduced-motion: reduce) { * { transition:none !important; } }
+</style>
+
+<main id="catalogo">
+  <div class="cabecera">
+    <div class="kicker">Propuestas comerciales · Julio 2026</div>
+    <h1>30 negocios chilenos sin página web — demos listas para mostrar</h1>
+    <p>Cada tarjeta abre el sitio de demostración creado para ese negocio. Comparte el enlace
+    directo de una demo agregando <code>#/nombre-del-negocio</code> a la URL.</p>
+  </div>
+  <h2 class="zona">Santiago</h2>
+  <div class="grilla">
+    <a class="tarjeta" href="#/barberia-santiago"><span class="t-icono">💈</span><span class="t-info"><strong>Barbería Santiago</strong><span class="t-meta">Providencia, Santiago</span><span class="t-tel">+56 9 3129 3420</span></span></a>
+    <a class="tarjeta" href="#/barbudos-barberia"><span class="t-icono">💈</span><span class="t-info"><strong>Barbudos Barbería</strong><span class="t-meta">Providencia, Santiago</span><span class="t-tel">+56 9 3062 4045</span></span></a>
+    <a class="tarjeta" href="#/peluqueria-santiago-providencia"><span class="t-icono">✂️</span><span class="t-info"><strong>Peluquería Santiago</strong><span class="t-meta">Providencia, Santiago</span><span class="t-tel">+56 9 9238 8900</span></span></a>
+    <a class="tarjeta" href="#/gasfiteria-ramos"><span class="t-icono">🔧</span><span class="t-info"><strong>Gasfitería Ramos 24 Horas</strong><span class="t-meta">Santiago</span><span class="t-tel">+56 9 6148 5055</span></span></a>
+    <a class="tarjeta" href="#/amasanderia-rosalia"><span class="t-icono">🥖</span><span class="t-info"><strong>Amasandería Rosalía</strong><span class="t-meta">Santiago</span><span class="t-tel">+56 2 2321 5933</span></span></a>
+  </div>
+  <h2 class="zona">Santiago Centro</h2>
+  <div class="grilla">
+    <a class="tarjeta" href="#/barberia-colombiana"><span class="t-icono">💈</span><span class="t-info"><strong>Barbería Colombiana</strong><span class="t-meta">Santiago Centro</span><span class="t-tel">+56 9 6546 7921</span></span></a>
+    <a class="tarjeta" href="#/barber-rock"><span class="t-icono">💈</span><span class="t-info"><strong>Barber Rock</strong><span class="t-meta">Santiago Centro</span><span class="t-tel">+56 9 3138 7047</span></span></a>
+    <a class="tarjeta" href="#/empanadas-don-guille"><span class="t-icono">🥟</span><span class="t-info"><strong>Empanadas Don Guille</strong><span class="t-meta">Santiago Centro</span><span class="t-tel">+56 9 4237 9217</span></span></a>
+  </div>
+  <h2 class="zona">Viña del Mar</h2>
+  <div class="grilla">
+    <a class="tarjeta" href="#/cakes-and-cakes"><span class="t-icono">🎂</span><span class="t-info"><strong>Cakes &amp; Cakes</strong><span class="t-meta">Viña del Mar</span><span class="t-tel">+56 9 7922 9382 (WhatsApp)</span></span></a>
+    <a class="tarjeta" href="#/las-genovesas"><span class="t-icono">🎂</span><span class="t-info"><strong>Las Genovesas</strong><span class="t-meta">Viña del Mar / Concón</span><span class="t-tel">+56 9 8289 0090 / +56 9 7852 7154</span></span></a>
+    <a class="tarjeta" href="#/secrets-vina"><span class="t-icono">💅</span><span class="t-info"><strong>Secrets Viña Salón de Belleza</strong><span class="t-meta">Viña del Mar</span><span class="t-tel">Contacto vía Facebook</span></span></a>
+    <a class="tarjeta" href="#/salon-unas-perfectas"><span class="t-icono">💅</span><span class="t-info"><strong>Salón Uñas Perfectas</strong><span class="t-meta">Viña del Mar</span><span class="t-tel">Contacto vía Facebook</span></span></a>
+    <a class="tarjeta" href="#/hands-and-roses"><span class="t-icono">💅</span><span class="t-info"><strong>Hands &amp; Roses</strong><span class="t-meta">Viña del Mar</span><span class="t-tel">Contacto vía Facebook</span></span></a>
+  </div>
+  <h2 class="zona">Concepción</h2>
+  <div class="grilla">
+    <a class="tarjeta" href="#/mecanico-domicilio-concepcion"><span class="t-icono">🔩</span><span class="t-info"><strong>Mecánico a Domicilio Concepción</strong><span class="t-meta">Concepción</span><span class="t-tel">+56 9 9578 3487</span></span></a>
+    <a class="tarjeta" href="#/automotriz-ss"><span class="t-icono">🔩</span><span class="t-info"><strong>Automotriz S.S.</strong><span class="t-meta">Concepción</span><span class="t-tel">+56 9 6647 5333 / +56 9 8632 0694</span></span></a>
+    <a class="tarjeta" href="#/garage-ink"><span class="t-icono">🚗</span><span class="t-info"><strong>Garage Ink</strong><span class="t-meta">Concepción</span><span class="t-tel">Contacto vía Facebook</span></span></a>
+  </div>
+  <h2 class="zona">Temuco</h2>
+  <div class="grilla">
+    <a class="tarjeta" href="#/llaves-araucania"><span class="t-icono">🔑</span><span class="t-info"><strong>Cerrajería Llaves Araucanía</strong><span class="t-meta">Temuco</span><span class="t-tel">+56 9 9962 5121</span></span></a>
+    <a class="tarjeta" href="#/desarmaduria-los-cacharros"><span class="t-icono">⚙️</span><span class="t-info"><strong>Desarmaduría Los Cacharros</strong><span class="t-meta">Temuco</span><span class="t-tel">+56 9 6648 4700 / +56 9 7769 8579</span></span></a>
+    <a class="tarjeta" href="#/cerrajeria-sepulveda"><span class="t-icono">🔑</span><span class="t-info"><strong>Cerrajería Sepúlveda</strong><span class="t-meta">Temuco</span><span class="t-tel">Contacto vía Facebook</span></span></a>
+  </div>
+  <h2 class="zona">La Serena</h2>
+  <div class="grilla">
+    <a class="tarjeta" href="#/sorpresas-y-flores-la-serena"><span class="t-icono">💐</span><span class="t-info"><strong>Sorpresas y Flores a Domicilio</strong><span class="t-meta">La Serena</span><span class="t-tel">+56 9 5409 9702 (WhatsApp)</span></span></a>
+    <a class="tarjeta" href="#/floreria-luna"><span class="t-icono">💐</span><span class="t-info"><strong>Florería Luna</strong><span class="t-meta">La Serena</span><span class="t-tel">Contacto vía Facebook</span></span></a>
+  </div>
+  <h2 class="zona">Coquimbo</h2>
+  <div class="grilla">
+    <a class="tarjeta" href="#/las-flores-de-mi-jardin"><span class="t-icono">💐</span><span class="t-info"><strong>Las Flores de mi Jardín</strong><span class="t-meta">Coquimbo (Sindempart)</span><span class="t-tel">+56 9 4089 8487</span></span></a>
+  </div>
+  <h2 class="zona">Rancagua</h2>
+  <div class="grilla">
+    <a class="tarjeta" href="#/copito-estetica"><span class="t-icono">🐩</span><span class="t-info"><strong>Copito Estética Canina</strong><span class="t-meta">Rancagua</span><span class="t-tel">+56 9 6827 0588</span></span></a>
+    <a class="tarjeta" href="#/club-pet-rancagua"><span class="t-icono">🐾</span><span class="t-info"><strong>Club Pet Rancagua</strong><span class="t-meta">Rancagua</span><span class="t-tel">+56 9 6251 9725</span></span></a>
+    <a class="tarjeta" href="#/veterinaria-morales-munoz"><span class="t-icono">🩺</span><span class="t-info"><strong>Clínica Veterinaria Morales y Muñoz</strong><span class="t-meta">Rancagua</span><span class="t-tel">+56 9 7224 4587</span></span></a>
+  </div>
+  <h2 class="zona">Antofagasta</h2>
+  <div class="grilla">
+    <a class="tarjeta" href="#/lavanderia-serlav"><span class="t-icono">🧺</span><span class="t-info"><strong>Lavandería Serlav</strong><span class="t-meta">Antofagasta</span><span class="t-tel">+56 9 5410 1749</span></span></a>
+    <a class="tarjeta" href="#/koala-lavanderia"><span class="t-icono">🧺</span><span class="t-info"><strong>Koala Lavandería</strong><span class="t-meta">Antofagasta</span><span class="t-tel">+56 9 4143 2496</span></span></a>
+    <a class="tarjeta" href="#/lavanderia-ecolav"><span class="t-icono">🧺</span><span class="t-info"><strong>Lavandería Ecolav</strong><span class="t-meta">Antofagasta</span><span class="t-tel">+56 9 8271 4680</span></span></a>
+  </div>
+  <h2 class="zona">Talca</h2>
+  <div class="grilla">
+    <a class="tarjeta" href="#/panaderia-dona-ines"><span class="t-icono">🥖</span><span class="t-info"><strong>Panadería y Pastelería Doña Inés</strong><span class="t-meta">Talca</span><span class="t-tel">+56 9 4263 8477</span></span></a>
+  </div>
+  <h2 class="zona">Puerto Montt</h2>
+  <div class="grilla">
+    <a class="tarjeta" href="#/ferreteria-los-molineros"><span class="t-icono">🛠️</span><span class="t-info"><strong>Ferretería Los Molineros</strong><span class="t-meta">Puerto Montt</span><span class="t-tel">+56 9 8648 6330 / +56 9 7334 8285</span></span></a>
+  </div>
+  <p class="aviso">Sitios de demostración no oficiales, creados como propuesta comercial.
+  Datos de contacto obtenidos de publicaciones públicas de cada negocio (Facebook y directorios).
+  Verifica los datos antes de contactar.</p>
+</main>
+
+<article class="demo" id="p-barberia-santiago" hidden style="--color:#1f2937; --acento:#d97706">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">💈</div>
+    <h1>Barbería Santiago</h1>
+    <div class="ciudad">Providencia, Santiago</div>
+    <p class="tagline">Cortes clásicos y modernos, afeitado tradicional y estilo para el hombre de hoy.</p>
+    <a class="cta" href="https://wa.me/56931293420">Escríbenos por WhatsApp</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Corte de cabello</h3><p>Cortes clásicos, fade, degradados y estilos a tu medida.</p></div>
+      <div class="card"><h3>Barba y afeitado</h3><p>Perfilado de barba y afeitado tradicional con toalla caliente.</p></div>
+      <div class="card"><h3>Atención personalizada</h3><p>Te asesoramos para encontrar el look que mejor te acomoda.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Providencia, Santiago, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📞 Teléfono</strong><a href="tel:+56931293420">+56 9 3129 3420</a></div>
+      <div class="item"><strong>💬 WhatsApp</strong><a href="https://wa.me/56931293420">Enviar mensaje</a></div>
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/barberiasantiagooficial/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Antonio Varas 303, Local 14, Providencia</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Barbería Santiago</strong> · Providencia, Santiago<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-barberia-colombiana" hidden style="--color:#1f2937; --acento:#d97706">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">💈</div>
+    <h1>Barbería Colombiana</h1>
+    <div class="ciudad">Santiago Centro</div>
+    <p class="tagline">Cortes clásicos y modernos, afeitado tradicional y estilo para el hombre de hoy.</p>
+    <a class="cta" href="https://wa.me/56965467921">Escríbenos por WhatsApp</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Corte de cabello</h3><p>Cortes clásicos, fade, degradados y estilos a tu medida.</p></div>
+      <div class="card"><h3>Barba y afeitado</h3><p>Perfilado de barba y afeitado tradicional con toalla caliente.</p></div>
+      <div class="card"><h3>Atención personalizada</h3><p>Te asesoramos para encontrar el look que mejor te acomoda.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Santiago Centro, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📞 Teléfono</strong><a href="tel:+56965467921">+56 9 6546 7921</a></div>
+      <div class="item"><strong>💬 WhatsApp</strong><a href="https://wa.me/56965467921">Enviar mensaje</a></div>
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/barberiacolombiana.cl/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Freire esquina Esmeralda 484, Santiago</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Barbería Colombiana</strong> · Santiago Centro<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-barbudos-barberia" hidden style="--color:#1f2937; --acento:#d97706">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">💈</div>
+    <h1>Barbudos Barbería</h1>
+    <div class="ciudad">Providencia, Santiago</div>
+    <p class="tagline">Cortes clásicos y modernos, afeitado tradicional y estilo para el hombre de hoy.</p>
+    <a class="cta" href="https://wa.me/56930624045">Escríbenos por WhatsApp</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Corte de cabello</h3><p>Cortes clásicos, fade, degradados y estilos a tu medida.</p></div>
+      <div class="card"><h3>Barba y afeitado</h3><p>Perfilado de barba y afeitado tradicional con toalla caliente.</p></div>
+      <div class="card"><h3>Atención personalizada</h3><p>Te asesoramos para encontrar el look que mejor te acomoda.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Providencia, Santiago, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📞 Teléfono</strong><a href="tel:+56930624045">+56 9 3062 4045</a></div>
+      <div class="item"><strong>💬 WhatsApp</strong><a href="https://wa.me/56930624045">Enviar mensaje</a></div>
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/barbudosbarberia/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Av. Nueva Providencia 2260, Providencia</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Barbudos Barbería</strong> · Providencia, Santiago<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-peluqueria-santiago-providencia" hidden style="--color:#4c1d95; --acento:#ec4899">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">✂️</div>
+    <h1>Peluquería Santiago</h1>
+    <div class="ciudad">Providencia, Santiago</div>
+    <p class="tagline">Corte, color y peinado con dedicación y años de experiencia.</p>
+    <a class="cta" href="https://wa.me/56992388900">Escríbenos por WhatsApp</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Corte y peinado</h3><p>Cortes de dama y varón, peinados para toda ocasión.</p></div>
+      <div class="card"><h3>Color y mechas</h3><p>Tintura, balayage y mechas con productos de calidad.</p></div>
+      <div class="card"><h3>Tratamientos</h3><p>Hidratación y cuidado capilar profesional.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Providencia, Santiago, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📞 Teléfono</strong><a href="tel:+56992388900">+56 9 9238 8900</a></div>
+      <div class="item"><strong>💬 WhatsApp</strong><a href="https://wa.me/56992388900">Enviar mensaje</a></div>
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/peluqueriasantiagobarberia/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Av. Providencia 2562, Local 34, Providencia</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Peluquería Santiago</strong> · Providencia, Santiago<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-barber-rock" hidden style="--color:#1f2937; --acento:#d97706">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">💈</div>
+    <h1>Barber Rock</h1>
+    <div class="ciudad">Santiago Centro</div>
+    <p class="tagline">Cortes clásicos y modernos, afeitado tradicional y estilo para el hombre de hoy.</p>
+    <a class="cta" href="https://wa.me/56931387047">Escríbenos por WhatsApp</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Corte de cabello</h3><p>Cortes clásicos, fade, degradados y estilos a tu medida.</p></div>
+      <div class="card"><h3>Barba y afeitado</h3><p>Perfilado de barba y afeitado tradicional con toalla caliente.</p></div>
+      <div class="card"><h3>Atención personalizada</h3><p>Te asesoramos para encontrar el look que mejor te acomoda.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Santiago Centro, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📞 Teléfono</strong><a href="tel:+56931387047">+56 9 3138 7047</a></div>
+      <div class="item"><strong>💬 WhatsApp</strong><a href="https://wa.me/56931387047">Enviar mensaje</a></div>
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/elbarberrock/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>París 830, Oficina 206, Santiago Centro</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Barber Rock</strong> · Santiago Centro<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-gasfiteria-ramos" hidden style="--color:#0c4a6e; --acento:#0ea5e9">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">🔧</div>
+    <h1>Gasfitería Ramos 24 Horas</h1>
+    <div class="ciudad">Santiago</div>
+    <p class="tagline">Urgencias de gasfitería las 24 horas, atención rápida a domicilio.</p>
+    <a class="cta" href="https://wa.me/56961485055">Escríbenos por WhatsApp</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Destapes y filtraciones</h3><p>Destape de cañerías y reparación de filtraciones.</p></div>
+      <div class="card"><h3>Instalación de artefactos</h3><p>Calefont, WC, lavaplatos, llaves y más.</p></div>
+      <div class="card"><h3>Urgencias 24/7</h3><p>Atención de emergencias a domicilio todos los días.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Santiago, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📞 Teléfono</strong><a href="tel:+56961485055">+56 9 6148 5055</a></div>
+      <div class="item"><strong>💬 WhatsApp</strong><a href="https://wa.me/56961485055">Enviar mensaje</a></div>
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/gasfiteriaramos24horas/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Servicio a domicilio en todo Santiago</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Gasfitería Ramos 24 Horas</strong> · Santiago<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-empanadas-don-guille" hidden style="--color:#7c2d12; --acento:#ea580c">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">🥟</div>
+    <h1>Empanadas Don Guille</h1>
+    <div class="ciudad">Santiago Centro</div>
+    <p class="tagline">Sabor casero de verdad: empanadas y comida chilena hecha con cariño.</p>
+    <a class="cta" href="https://wa.me/56942379217">Escríbenos por WhatsApp</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Empanadas artesanales</h3><p>De pino, queso, napolitana y variedades de la casa.</p></div>
+      <div class="card"><h3>Pedidos por encargo</h3><p>Para cumpleaños, reuniones y eventos familiares.</p></div>
+      <div class="card"><h3>Atención por WhatsApp</h3><p>Encarga hoy y retira o recibe en tu casa.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Santiago Centro, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📞 Teléfono</strong><a href="tel:+56942379217">+56 9 4237 9217</a></div>
+      <div class="item"><strong>💬 WhatsApp</strong><a href="https://wa.me/56942379217">Enviar mensaje</a></div>
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/Empanadasdonguille/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Gorbea 2554, Santiago Centro</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Empanadas Don Guille</strong> · Santiago Centro<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-amasanderia-rosalia" hidden style="--color:#78350f; --acento:#f59e0b">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">🥖</div>
+    <h1>Amasandería Rosalía</h1>
+    <div class="ciudad">Santiago</div>
+    <p class="tagline">Pan amasado, pasteles y productos frescos todos los días.</p>
+    <a class="cta" href="tel:+56223215933">Llámanos: +56 2 2321 5933</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Pan fresco diario</h3><p>Pan amasado, marraqueta, hallulla y especiales.</p></div>
+      <div class="card"><h3>Pastelería</h3><p>Tortas, kuchen y dulces para toda ocasión.</p></div>
+      <div class="card"><h3>Encargos especiales</h3><p>Pedidos para eventos, celebraciones y negocios.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Santiago, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📞 Teléfono</strong><a href="tel:+56223215933">+56 2 2321 5933</a></div>
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/EmpanadasRosalia/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Pastor Fernández 15521, Santiago</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Amasandería Rosalía</strong> · Santiago<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-cakes-and-cakes" hidden style="--color:#831843; --acento:#f472b6">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">🎂</div>
+    <h1>Cakes &amp; Cakes</h1>
+    <div class="ciudad">Viña del Mar</div>
+    <p class="tagline">Tortas personalizadas y dulzura artesanal para tus celebraciones.</p>
+    <a class="cta" href="https://wa.me/56979229382">Escríbenos por WhatsApp</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Tortas personalizadas</h3><p>Diseños a pedido para cumpleaños y matrimonios.</p></div>
+      <div class="card"><h3>Cupcakes y dulces</h3><p>Mesas dulces, cupcakes y galletas decoradas.</p></div>
+      <div class="card"><h3>Reparto a domicilio</h3><p>Llevamos tu pedido donde lo necesites.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Viña del Mar, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📞 Teléfono</strong><a href="tel:+56979229382">+56 9 7922 9382 (WhatsApp)</a></div>
+      <div class="item"><strong>💬 WhatsApp</strong><a href="https://wa.me/56979229382">Enviar mensaje</a></div>
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/cakesandcakespasteleria/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Viña del Mar, Región de Valparaíso</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Cakes &amp; Cakes</strong> · Viña del Mar<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-las-genovesas" hidden style="--color:#831843; --acento:#f472b6">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">🎂</div>
+    <h1>Las Genovesas</h1>
+    <div class="ciudad">Viña del Mar / Concón</div>
+    <p class="tagline">Tortas personalizadas y dulzura artesanal para tus celebraciones.</p>
+    <a class="cta" href="https://wa.me/56982890090">Escríbenos por WhatsApp</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Tortas personalizadas</h3><p>Diseños a pedido para cumpleaños y matrimonios.</p></div>
+      <div class="card"><h3>Cupcakes y dulces</h3><p>Mesas dulces, cupcakes y galletas decoradas.</p></div>
+      <div class="card"><h3>Reparto a domicilio</h3><p>Llevamos tu pedido donde lo necesites.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Viña del Mar / Concón, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📞 Teléfono</strong><a href="tel:+56982890090">+56 9 8289 0090 / +56 9 7852 7154</a></div>
+      <div class="item"><strong>💬 WhatsApp</strong><a href="https://wa.me/56982890090">Enviar mensaje</a></div>
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/294351348764975">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Viña del Mar, Concón, Mantagua y Reñaca</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Las Genovesas</strong> · Viña del Mar / Concón<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-secrets-vina" hidden style="--color:#581c87; --acento:#e879f9">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">💅</div>
+    <h1>Secrets Viña Salón de Belleza</h1>
+    <div class="ciudad">Viña del Mar</div>
+    <p class="tagline">Tu espacio de belleza y cuidado personal en el corazón de la ciudad.</p>
+    <a class="cta" href="https://www.facebook.com/secretsvina/">Contáctanos por Facebook</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Peluquería</h3><p>Corte, color y peinados profesionales.</p></div>
+      <div class="card"><h3>Manicure y pedicure</h3><p>Esmaltado tradicional y permanente.</p></div>
+      <div class="card"><h3>Tratamientos de belleza</h3><p>Depilación, cejas, pestañas y más.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Viña del Mar, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/secretsvina/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Av. Valparaíso 463, Local 289A, Viña del Mar</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Secrets Viña Salón de Belleza</strong> · Viña del Mar<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-salon-unas-perfectas" hidden style="--color:#9d174d; --acento:#fb7185">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">💅</div>
+    <h1>Salón Uñas Perfectas</h1>
+    <div class="ciudad">Viña del Mar</div>
+    <p class="tagline">Manicure profesional, esmaltado permanente y nail art con estilo.</p>
+    <a class="cta" href="https://www.facebook.com/salonunasperfectas/">Contáctanos por Facebook</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Esmaltado permanente</h3><p>Duración y brillo impecable por semanas.</p></div>
+      <div class="card"><h3>Uñas acrílicas y softgel</h3><p>Extensiones y sistemas de última tendencia.</p></div>
+      <div class="card"><h3>Nail art y diseños</h3><p>Diseños personalizados para cada ocasión.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Viña del Mar, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/salonunasperfectas/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Viña del Mar, Región de Valparaíso</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Salón Uñas Perfectas</strong> · Viña del Mar<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-hands-and-roses" hidden style="--color:#9d174d; --acento:#fb7185">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">💅</div>
+    <h1>Hands &amp; Roses</h1>
+    <div class="ciudad">Viña del Mar</div>
+    <p class="tagline">Manicure profesional, esmaltado permanente y nail art con estilo.</p>
+    <a class="cta" href="https://www.facebook.com/handsandrosesvinadelmar/">Contáctanos por Facebook</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Esmaltado permanente</h3><p>Duración y brillo impecable por semanas.</p></div>
+      <div class="card"><h3>Uñas acrílicas y softgel</h3><p>Extensiones y sistemas de última tendencia.</p></div>
+      <div class="card"><h3>Nail art y diseños</h3><p>Diseños personalizados para cada ocasión.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Viña del Mar, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/handsandrosesvinadelmar/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Viña del Mar, Región de Valparaíso</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Hands &amp; Roses</strong> · Viña del Mar<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-mecanico-domicilio-concepcion" hidden style="--color:#111827; --acento:#ef4444">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">🔩</div>
+    <h1>Mecánico a Domicilio Concepción</h1>
+    <div class="ciudad">Concepción</div>
+    <p class="tagline">Mecánica automotriz confiable: diagnóstico, mantención y reparación.</p>
+    <a class="cta" href="https://wa.me/56995783487">Escríbenos por WhatsApp</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Mantención preventiva</h3><p>Cambio de aceite, frenos, correas y afinamiento.</p></div>
+      <div class="card"><h3>Diagnóstico computarizado</h3><p>Detección de fallas con equipos especializados.</p></div>
+      <div class="card"><h3>Reparaciones generales</h3><p>Motor, suspensión, embrague y sistema eléctrico.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Concepción, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📞 Teléfono</strong><a href="tel:+56995783487">+56 9 9578 3487</a></div>
+      <div class="item"><strong>💬 WhatsApp</strong><a href="https://wa.me/56995783487">Enviar mensaje</a></div>
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/Mecadomicilioconce/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Servicio a domicilio en el Gran Concepción</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Mecánico a Domicilio Concepción</strong> · Concepción<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-automotriz-ss" hidden style="--color:#111827; --acento:#ef4444">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">🔩</div>
+    <h1>Automotriz S.S.</h1>
+    <div class="ciudad">Concepción</div>
+    <p class="tagline">Mecánica automotriz confiable: diagnóstico, mantención y reparación.</p>
+    <a class="cta" href="https://wa.me/56966475333">Escríbenos por WhatsApp</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Mantención preventiva</h3><p>Cambio de aceite, frenos, correas y afinamiento.</p></div>
+      <div class="card"><h3>Diagnóstico computarizado</h3><p>Detección de fallas con equipos especializados.</p></div>
+      <div class="card"><h3>Reparaciones generales</h3><p>Motor, suspensión, embrague y sistema eléctrico.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Concepción, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📞 Teléfono</strong><a href="tel:+56966475333">+56 9 6647 5333 / +56 9 8632 0694</a></div>
+      <div class="item"><strong>💬 WhatsApp</strong><a href="https://wa.me/56966475333">Enviar mensaje</a></div>
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/p/Automotriz-SS-100057667800992/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Galvarino 2092, Concepción</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Automotriz S.S.</strong> · Concepción<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-garage-ink" hidden style="--color:#134e4a; --acento:#2dd4bf">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">🚗</div>
+    <h1>Garage Ink</h1>
+    <div class="ciudad">Concepción</div>
+    <p class="tagline">Desabolladura y pintura automotriz con terminaciones de calidad.</p>
+    <a class="cta" href="https://www.facebook.com/garageink.ccp/">Contáctanos por Facebook</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Desabolladura</h3><p>Recuperamos la carrocería de tu vehículo.</p></div>
+      <div class="card"><h3>Pintura automotriz</h3><p>Igualación de color y pintura completa o parcial.</p></div>
+      <div class="card"><h3>Pulido y detailing</h3><p>Tu auto como nuevo, por dentro y por fuera.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Concepción, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/garageink.ccp/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Manuel Rodríguez 760, Concepción</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Garage Ink</strong> · Concepción<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-llaves-araucania" hidden style="--color:#3f3f46; --acento:#eab308">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">🔑</div>
+    <h1>Cerrajería Llaves Araucanía</h1>
+    <div class="ciudad">Temuco</div>
+    <p class="tagline">Copias de llaves, aperturas y soluciones de cerrajería al instante.</p>
+    <a class="cta" href="https://wa.me/56999625121">Escríbenos por WhatsApp</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Copia de llaves</h3><p>Llaves de casa, auto y candados en minutos.</p></div>
+      <div class="card"><h3>Apertura de puertas</h3><p>Urgencias y aperturas sin dañar tu cerradura.</p></div>
+      <div class="card"><h3>Cambio de cerraduras</h3><p>Instalación y reparación de cerraduras y chapas.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Temuco, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📞 Teléfono</strong><a href="tel:+56999625121">+56 9 9962 5121</a></div>
+      <div class="item"><strong>💬 WhatsApp</strong><a href="https://wa.me/56999625121">Enviar mensaje</a></div>
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/llavesaraucania/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Lynch 498, Temuco</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Cerrajería Llaves Araucanía</strong> · Temuco<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-desarmaduria-los-cacharros" hidden style="--color:#1c1917; --acento:#f97316">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">⚙️</div>
+    <h1>Desarmaduría Los Cacharros</h1>
+    <div class="ciudad">Temuco</div>
+    <p class="tagline">Repuestos usados garantizados para todas las marcas y modelos.</p>
+    <a class="cta" href="https://wa.me/56966484700">Escríbenos por WhatsApp</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Repuestos originales usados</h3><p>Motores, cajas, focos, espejos y más.</p></div>
+      <div class="card"><h3>Compra de vehículos</h3><p>Compramos autos para desarme, pago inmediato.</p></div>
+      <div class="card"><h3>Envíos a regiones</h3><p>Despachamos repuestos a todo Chile.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Temuco, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📞 Teléfono</strong><a href="tel:+56966484700">+56 9 6648 4700 / +56 9 7769 8579</a></div>
+      <div class="item"><strong>💬 WhatsApp</strong><a href="https://wa.me/56966484700">Enviar mensaje</a></div>
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/loscacharross/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Av. Manuel Recabarren 04050, Temuco</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Desarmaduría Los Cacharros</strong> · Temuco<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-cerrajeria-sepulveda" hidden style="--color:#3f3f46; --acento:#eab308">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">🔑</div>
+    <h1>Cerrajería Sepúlveda</h1>
+    <div class="ciudad">Temuco</div>
+    <p class="tagline">Copias de llaves, aperturas y soluciones de cerrajería al instante.</p>
+    <a class="cta" href="https://www.facebook.com/p/Cerrajer%C3%ADa-Sep%C3%BAlveda-100046272776157/">Contáctanos por Facebook</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Copia de llaves</h3><p>Llaves de casa, auto y candados en minutos.</p></div>
+      <div class="card"><h3>Apertura de puertas</h3><p>Urgencias y aperturas sin dañar tu cerradura.</p></div>
+      <div class="card"><h3>Cambio de cerraduras</h3><p>Instalación y reparación de cerraduras y chapas.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Temuco, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/p/Cerrajer%C3%ADa-Sep%C3%BAlveda-100046272776157/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Mall Portal Temuco (sector estacionamientos)</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Cerrajería Sepúlveda</strong> · Temuco<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-sorpresas-y-flores-la-serena" hidden style="--color:#14532d; --acento:#f43f5e">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">💐</div>
+    <h1>Sorpresas y Flores a Domicilio</h1>
+    <div class="ciudad">La Serena</div>
+    <p class="tagline">Flores frescas y arreglos con reparto a domicilio para sorprender.</p>
+    <a class="cta" href="https://wa.me/56954099702">Escríbenos por WhatsApp</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Arreglos florales</h3><p>Ramos y arreglos para toda ocasión.</p></div>
+      <div class="card"><h3>Reparto a domicilio</h3><p>Entregamos tus flores el mismo día.</p></div>
+      <div class="card"><h3>Eventos y condolencias</h3><p>Decoración floral y coronas de condolencia.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de La Serena, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📞 Teléfono</strong><a href="tel:+56954099702">+56 9 5409 9702 (WhatsApp)</a></div>
+      <div class="item"><strong>💬 WhatsApp</strong><a href="https://wa.me/56954099702">Enviar mensaje</a></div>
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/marketplace/item/2616157118773234/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Reparto a domicilio en La Serena y Coquimbo</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Sorpresas y Flores a Domicilio</strong> · La Serena<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-las-flores-de-mi-jardin" hidden style="--color:#14532d; --acento:#f43f5e">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">💐</div>
+    <h1>Las Flores de mi Jardín</h1>
+    <div class="ciudad">Coquimbo (Sindempart)</div>
+    <p class="tagline">Flores frescas y arreglos con reparto a domicilio para sorprender.</p>
+    <a class="cta" href="https://wa.me/56940898487">Escríbenos por WhatsApp</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Arreglos florales</h3><p>Ramos y arreglos para toda ocasión.</p></div>
+      <div class="card"><h3>Reparto a domicilio</h3><p>Entregamos tus flores el mismo día.</p></div>
+      <div class="card"><h3>Eventos y condolencias</h3><p>Decoración floral y coronas de condolencia.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Coquimbo (Sindempart), con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📞 Teléfono</strong><a href="tel:+56940898487">+56 9 4089 8487</a></div>
+      <div class="item"><strong>💬 WhatsApp</strong><a href="https://wa.me/56940898487">Enviar mensaje</a></div>
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/p/Floreria-en-sindempart-las-flores-de-mi-jardin-coquimbo-100057516546284/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Sindempart, Coquimbo</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Las Flores de mi Jardín</strong> · Coquimbo (Sindempart)<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-floreria-luna" hidden style="--color:#14532d; --acento:#f43f5e">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">💐</div>
+    <h1>Florería Luna</h1>
+    <div class="ciudad">La Serena</div>
+    <p class="tagline">Flores frescas y arreglos con reparto a domicilio para sorprender.</p>
+    <a class="cta" href="https://www.facebook.com/p/Florer%C3%ADa-Luna-100063840069197/">Contáctanos por Facebook</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Arreglos florales</h3><p>Ramos y arreglos para toda ocasión.</p></div>
+      <div class="card"><h3>Reparto a domicilio</h3><p>Entregamos tus flores el mismo día.</p></div>
+      <div class="card"><h3>Eventos y condolencias</h3><p>Decoración floral y coronas de condolencia.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de La Serena, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/p/Florer%C3%ADa-Luna-100063840069197/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>La Serena, Región de Coquimbo</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Florería Luna</strong> · La Serena<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-copito-estetica" hidden style="--color:#155e75; --acento:#fbbf24">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">🐩</div>
+    <h1>Copito Estética Canina</h1>
+    <div class="ciudad">Rancagua</div>
+    <p class="tagline">Baño y peluquería para tu mascota, con cariño y a domicilio.</p>
+    <a class="cta" href="https://wa.me/56968270588">Escríbenos por WhatsApp</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Baño y secado</h3><p>Baño completo con productos adecuados a cada pelaje.</p></div>
+      <div class="card"><h3>Corte de pelo y uñas</h3><p>Cortes de raza y de verano, corte de uñas.</p></div>
+      <div class="card"><h3>Atención a domicilio</h3><p>Vamos donde tu mascota, sin estrés ni traslados.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Rancagua, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📞 Teléfono</strong><a href="tel:+56968270588">+56 9 6827 0588</a></div>
+      <div class="item"><strong>💬 WhatsApp</strong><a href="https://wa.me/56968270588">Enviar mensaje</a></div>
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/CopitoEsteticaRancagua/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Servicio a domicilio en Rancagua</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Copito Estética Canina</strong> · Rancagua<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-club-pet-rancagua" hidden style="--color:#7c2d12; --acento:#22c55e">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">🐾</div>
+    <h1>Club Pet Rancagua</h1>
+    <div class="ciudad">Rancagua</div>
+    <p class="tagline">Todo para tu mascota: alimentos, accesorios y mucho cariño.</p>
+    <a class="cta" href="https://wa.me/56962519725">Escríbenos por WhatsApp</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Alimentos</h3><p>Las mejores marcas para perros, gatos y más.</p></div>
+      <div class="card"><h3>Accesorios y juguetes</h3><p>Correas, camas, ropa y entretención.</p></div>
+      <div class="card"><h3>Despacho a domicilio</h3><p>Recibe tu pedido en la puerta de tu casa.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Rancagua, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📞 Teléfono</strong><a href="tel:+56962519725">+56 9 6251 9725</a></div>
+      <div class="item"><strong>💬 WhatsApp</strong><a href="https://wa.me/56962519725">Enviar mensaje</a></div>
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/ClubPetRancagua/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Rancagua, Región de O&#x27;Higgins</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Club Pet Rancagua</strong> · Rancagua<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-veterinaria-morales-munoz" hidden style="--color:#065f46; --acento:#34d399">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">🩺</div>
+    <h1>Clínica Veterinaria Morales y Muñoz</h1>
+    <div class="ciudad">Rancagua</div>
+    <p class="tagline">Cuidamos la salud de tu mascota con atención profesional y cercana.</p>
+    <a class="cta" href="https://wa.me/56972244587">Escríbenos por WhatsApp</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Consulta veterinaria</h3><p>Medicina general y control sano.</p></div>
+      <div class="card"><h3>Vacunas y desparasitación</h3><p>Plan de vacunación al día para tu mascota.</p></div>
+      <div class="card"><h3>Cirugías y procedimientos</h3><p>Esterilización y cirugías con equipo profesional.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Rancagua, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📞 Teléfono</strong><a href="tel:+56972244587">+56 9 7224 4587</a></div>
+      <div class="item"><strong>💬 WhatsApp</strong><a href="https://wa.me/56972244587">Enviar mensaje</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Cáceres 409, Rancagua</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Clínica Veterinaria Morales y Muñoz</strong> · Rancagua<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-lavanderia-serlav" hidden style="--color:#1e3a8a; --acento:#38bdf8">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">🧺</div>
+    <h1>Lavandería Serlav</h1>
+    <div class="ciudad">Antofagasta</div>
+    <p class="tagline">Lavado, secado y planchado con retiro y entrega a domicilio.</p>
+    <a class="cta" href="https://wa.me/56954101749">Escríbenos por WhatsApp</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Lavado por kilo</h3><p>Ropa de diario lavada, secada y doblada.</p></div>
+      <div class="card"><h3>Lavado industrial</h3><p>Servicio para empresas, hoteles y residencias.</p></div>
+      <div class="card"><h3>Retiro y entrega</h3><p>Retiramos y entregamos en tu casa u oficina.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Antofagasta, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📞 Teléfono</strong><a href="tel:+56954101749">+56 9 5410 1749</a></div>
+      <div class="item"><strong>💬 WhatsApp</strong><a href="https://wa.me/56954101749">Enviar mensaje</a></div>
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/LavanderiaSerlav/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Antofagasta y Mejillones</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Lavandería Serlav</strong> · Antofagasta<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-koala-lavanderia" hidden style="--color:#1e3a8a; --acento:#38bdf8">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">🧺</div>
+    <h1>Koala Lavandería</h1>
+    <div class="ciudad">Antofagasta</div>
+    <p class="tagline">Lavado, secado y planchado con retiro y entrega a domicilio.</p>
+    <a class="cta" href="https://wa.me/56941432496">Escríbenos por WhatsApp</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Lavado por kilo</h3><p>Ropa de diario lavada, secada y doblada.</p></div>
+      <div class="card"><h3>Lavado industrial</h3><p>Servicio para empresas, hoteles y residencias.</p></div>
+      <div class="card"><h3>Retiro y entrega</h3><p>Retiramos y entregamos en tu casa u oficina.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Antofagasta, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📞 Teléfono</strong><a href="tel:+56941432496">+56 9 4143 2496</a></div>
+      <div class="item"><strong>💬 WhatsApp</strong><a href="https://wa.me/56941432496">Enviar mensaje</a></div>
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/KoalaLavanderia/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Antofagasta, Región de Antofagasta</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Koala Lavandería</strong> · Antofagasta<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-lavanderia-ecolav" hidden style="--color:#1e3a8a; --acento:#38bdf8">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">🧺</div>
+    <h1>Lavandería Ecolav</h1>
+    <div class="ciudad">Antofagasta</div>
+    <p class="tagline">Lavado, secado y planchado con retiro y entrega a domicilio.</p>
+    <a class="cta" href="https://wa.me/56982714680">Escríbenos por WhatsApp</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Lavado por kilo</h3><p>Ropa de diario lavada, secada y doblada.</p></div>
+      <div class="card"><h3>Lavado industrial</h3><p>Servicio para empresas, hoteles y residencias.</p></div>
+      <div class="card"><h3>Retiro y entrega</h3><p>Retiramos y entregamos en tu casa u oficina.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Antofagasta, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📞 Teléfono</strong><a href="tel:+56982714680">+56 9 8271 4680</a></div>
+      <div class="item"><strong>💬 WhatsApp</strong><a href="https://wa.me/56982714680">Enviar mensaje</a></div>
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/Lav.eco.lav/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Avelino Contardo 1164, Antofagasta</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Lavandería Ecolav</strong> · Antofagasta<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-panaderia-dona-ines" hidden style="--color:#78350f; --acento:#f59e0b">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">🥖</div>
+    <h1>Panadería y Pastelería Doña Inés</h1>
+    <div class="ciudad">Talca</div>
+    <p class="tagline">Pan amasado, pasteles y productos frescos todos los días.</p>
+    <a class="cta" href="https://wa.me/56942638477">Escríbenos por WhatsApp</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Pan fresco diario</h3><p>Pan amasado, marraqueta, hallulla y especiales.</p></div>
+      <div class="card"><h3>Pastelería</h3><p>Tortas, kuchen y dulces para toda ocasión.</p></div>
+      <div class="card"><h3>Encargos especiales</h3><p>Pedidos para eventos, celebraciones y negocios.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Talca, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📞 Teléfono</strong><a href="tel:+56942638477">+56 9 4263 8477</a></div>
+      <div class="item"><strong>💬 WhatsApp</strong><a href="https://wa.me/56942638477">Enviar mensaje</a></div>
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/Panaderia.Dona.Ines.Talca/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Av. 5 Poniente 26 Sur, Talca</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Panadería y Pastelería Doña Inés</strong> · Talca<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+
+<article class="demo" id="p-ferreteria-los-molineros" hidden style="--color:#7f1d1d; --acento:#fbbf24">
+  <a class="volver" href="#">← Catálogo</a>
+  <div class="demo-banner">⚠️ SITIO DE DEMOSTRACIÓN — propuesta de página web para este negocio. No es su sitio oficial.</div>
+  <header class="demo-hero">
+    <div class="icono">🛠️</div>
+    <h1>Ferretería Los Molineros</h1>
+    <div class="ciudad">Puerto Montt</div>
+    <p class="tagline">Todo para la construcción, el hogar y tus proyectos.</p>
+    <a class="cta" href="https://wa.me/56986486330">Escríbenos por WhatsApp</a>
+  </header>
+  <section>
+    <h2>Nuestros servicios</h2>
+    <div class="servicios">
+      <div class="card"><h3>Materiales de construcción</h3><p>Cemento, fierro, madera y áridos.</p></div>
+      <div class="card"><h3>Herramientas</h3><p>Herramientas manuales y eléctricas de las mejores marcas.</p></div>
+      <div class="card"><h3>Despacho a obra</h3><p>Llevamos tus materiales directo a la obra o a tu casa.</p></div>
+    </div>
+  </section>
+  <div class="franja">
+    <div class="inner">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Somos un negocio local de Puerto Montt, con atención cercana y el compromiso de siempre.
+      Contáctanos directamente y recibe atención personalizada, sin intermediarios.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Contacto</h2>
+    <div class="contacto">
+      <div class="item"><strong>📞 Teléfono</strong><a href="tel:+56986486330">+56 9 8648 6330 / +56 9 7334 8285</a></div>
+      <div class="item"><strong>💬 WhatsApp</strong><a href="https://wa.me/56986486330">Enviar mensaje</a></div>
+      <div class="item"><strong>📘 Facebook</strong><a href="https://www.facebook.com/LosMolinerosPuertoMontt/">Ver página</a></div>
+      <div class="item"><strong>📍 Dirección</strong>Puerto Montt, Región de Los Lagos</div>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <strong>Ferretería Los Molineros</strong> · Puerto Montt<br>
+    Página de demostración creada como propuesta comercial — datos de contacto obtenidos de fuentes públicas.<br>
+    Si este negocio es tuyo y quieres este sitio (o pedir cambios/eliminación), contáctanos.
+  </footer>
+</article>
+<script>
+  const catalogo = document.getElementById('catalogo');
+  function mostrar() {
+    const slug = location.hash.startsWith('#/') ? location.hash.slice(2) : null;
+    let encontrado = false;
+    document.querySelectorAll('.demo').forEach(d => {
+      const activo = d.id === 'p-' + slug;
+      d.hidden = !activo;
+      if (activo) encontrado = true;
+    });
+    catalogo.hidden = encontrado;
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', mostrar);
+  mostrar();
+</script>
