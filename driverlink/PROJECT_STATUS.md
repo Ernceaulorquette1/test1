@@ -11,10 +11,10 @@ Leyenda:
 | Verificación | Resultado |
 |---|---|
 | Dominio (validaciones, políticas, casos de uso): 36 pruebas JVM | ✅ en verde |
-| ViewModels (Login, Registro) | incluidos en `testDemoDebugUnitTest` (CI) |
+| ViewModels (Login, Registro) + dominio en Android | ✅ `testDemoDebugUnitTest` en CI |
 | Reglas Firestore + Storage: 12 pruebas en emulador | ✅ en verde |
 | Cloud Functions: `tsc --strict` + pruebas | ✅ en verde |
-| Compilación Android (demo, prod, androidTest) y lint | CI `.github/workflows/driverlink.yml` |
+| Compilación Android: `assembleDemoDebug`, `compileProdDebugKotlin`, tests instrumentados y `lintDemoDebug` | ✅ en verde en GitHub Actions (`.github/workflows/driverlink.yml`) |
 | Prueba manual en dispositivo | No realizada en este entorno: hacer el recorrido de SETUP.md §4 |
 
 ## Módulos
