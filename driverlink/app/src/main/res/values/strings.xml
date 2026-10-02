@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Textos en español (idioma base). Para agregar idiomas crear values-en, values-fr, values-ht (Kreyòl)
+    con las mismas claves. app_name se define por flavor en app/build.gradle.kts.
+-->
+<resources>
+    <!-- Marca (cambiar aquí para re-branding) -->
+    <string name="brand_name">DriverLink</string>
+    <string name="brand_name_upper">DRIVERLINK</string>
+    <string name="brand_tagline">Conductores conectados en Chile</string>
+
+    <!-- Acciones comunes -->
+    <string name="action_approve">Aprobar</string>
+    <string name="action_back">Volver</string>
+    <string name="action_call_contact">Llamar a %1$s</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_close">Cerrar</string>
+    <string name="action_continue">Continuar</string>
+    <string name="action_delete">Eliminar</string>
+    <string name="action_not_now">Ahora no</string>
+    <string name="action_publish">Publicar</string>
+    <string name="action_reject">Rechazar</string>
+    <string name="action_report">Reportar</string>
+    <string name="action_report_content">Denunciar</string>
+    <string name="action_retry">Reintentar</string>
+    <string name="action_save">Guardar</string>
+    <string name="action_send">Enviar</string>
+    <string name="action_unblock">Desbloquear</string>
+    <string name="action_verify">Verificar</string>
+
+    <!-- Estados -->
+    <string name="state_loading">Cargando…</string>
+    <string name="offline_banner">Sin conexión. Los mensajes se enviarán al recuperar la red; las acciones críticas pueden fallar.</string>
+    <string name="maintenance_title">Estamos en mantención</string>
+    <string name="maintenance_body">DriverLink volverá en unos minutos. Ante una emergencia, llama directamente a los servicios oficiales (133, 131, 132).</string>
+    <string name="step_done">Completado</string>
+    <string name="step_pending">Pendiente</string>
+
+    <!-- Errores comprensibles -->
+    <string name="error_network">No hay conexión. Revisa tu internet e inténtalo de nuevo.</string>
+    <string name="error_unauthenticated">Tu sesión expiró. Vuelve a iniciar sesión.</string>
+    <string name="error_permission_denied">No tienes permiso para realizar esta acción.</string>
+    <string name="error_not_found">No encontramos la información solicitada.</string>
+    <string name="error_premium_required">Esta función es parte de DriverLink Pro.</string>
+    <string name="error_already_exists">Esto ya existe o ya fue utilizado.</string>
+    <string name="error_already_voted">Ya registraste tu opinión sobre esta alerta.</string>
+    <string name="error_invalid_credentials">Correo o contraseña incorrectos.</string>
+    <string name="error_email_in_use">Ya existe una cuenta con este correo.</string>
+    <string name="error_weak_password">La contraseña es demasiado débil.</string>
+    <string name="error_rate_limited">Demasiados intentos. Espera un momento.</string>
+    <string name="error_location_unavailable">No pudimos obtener tu ubicación. Revisa que el GPS esté activo.</string>
+    <string name="error_feature_disabled">Esta función no está disponible temporalmente.</string>
+    <string name="error_not_configured">Esta función aún no está habilitada en esta versión.</string>
+    <string name="error_maintenance">DriverLink está en mantención. Inténtalo más tarde.</string>
+    <string name="error_validation">Revisa los datos ingresados.</string>
+    <string name="error_unknown">Ocurrió un problema. Inténtalo nuevamente.</string>
+    <string name="error_email_invalid">Ingresa un correo válido.</string>
+    <string name="error_password_required">Ingresa tu contraseña.</string>
+    <string name="error_name_invalid">Ingresa un nombre válido.</string>
+    <string name="error_phone_invalid">Ingresa un teléfono chileno válido (ej. +56 9 1234 5678).</string>
+    <string name="error_required">Este campo es obligatorio.</string>
+    <string name="error_field_invalid">Dato inválido.</string>
+    <string name="error_platforms_required">Selecciona al menos una plataforma.</string>
+    <string name="error_form_incomplete">Revisa los campos marcados.</string>
+    <string name="error_load_messages">No pudimos cargar los mensajes.</string>
+    <string name="error_location_needed_alert">Necesitamos tu ubicación para publicar la alerta en el lugar correcto.</string>
+
+    <!-- Permisos -->
+    <string name="permission_title">Permiso necesario</string>
+    <string name="permission_location_map_rationale">Usamos tu ubicación solo para centrar el mapa y mostrar alertas cercanas. Nunca se muestra a otros conductores.</string>
+    <string name="permission_location_alert_rationale">Para publicar la alerta necesitamos la ubicación del incidente. Solo se guarda la posición de la alerta.</string>
+    <string name="permission_location_sos_rationale">Durante un SOS compartimos tu ubicación con el equipo de asistencia mientras el caso esté activo. Si no la concedes, el SOS se envía igual sin ubicación.</string>
+    <string name="permission_location_work_rationale">Durante tu jornada laboral tu empresa verá tu última ubicación operacional. El seguimiento termina al finalizar la jornada.</string>
+    <string name="permission_microphone_rationale">Necesitamos el micrófono para grabar mensajes de radio. Solo se graba mientras mantienes presionado el botón.</string>
+    <string name="permission_notifications_rationale">Te avisaremos de alertas cercanas y actualizaciones de SOS. Puedes elegir qué notificaciones recibir en Perfil → Notificaciones.</string>
+
+    <!-- Bienvenida y autenticación -->
+    <string name="welcome_subtitle">Comunidad, radio, alertas viales y asistencia para conductores.</string>
+    <string name="welcome_login">Iniciar sesión</string>
+    <string name="welcome_register">Crear cuenta</string>
+    <string name="welcome_external">Continuar con plataforma compatible</string>
+    <string name="welcome_disclaimer">DriverLink es una aplicación independiente. No es una aplicación oficial de Uber, DiDi ni Cabify.</string>
+    <string name="external_auth_unavailable">Aún no hay integraciones oficiales disponibles con plataformas de transporte. Cuando exista una autorización válida aparecerá aquí. Mientras tanto, crea tu cuenta con tu correo.</string>
+    <string name="login_title">Iniciar sesión</string>
+    <string name="login_submit">Entrar</string>
+    <string name="login_forgot">Olvidé mi contraseña</string>
+    <string name="login_no_account">¿No tienes cuenta? Crear cuenta</string>
+    <string name="login_reset_sent">Te enviamos un correo para restablecer tu contraseña.</string>
+    <string name="demo_credentials_hint">Modo demo: demo@driverlink.cl, pro@driverlink.cl o expirado@driverlink.cl con contraseña demo1234.</string>
+    <string name="register_title">Crear cuenta</string>
+    <string name="register_photo_optional">Agregar foto (opcional)</string>
+    <string name="register_platforms">Plataformas donde trabajas</string>
+    <string name="register_accept_terms">Acepto los términos de uso y la política de privacidad.</string>
+    <string name="register_accept_terms_required">Debes aceptar los términos para continuar.</string>
+    <string name="register_submit">Crear cuenta</string>
+    <string name="platform_disclaimer">Los nombres de plataformas se usan solo para identificar dónde trabajas; no implican asociación oficial.</string>
+    <string name="password_rules">Mínimo 8 caracteres, con letras y números.</string>
+    <string name="field_first_name">Nombre</string>
+    <string name="field_last_name">Apellido</string>
+    <string name="field_email">Correo electrónico</string>
+    <string name="field_phone">Teléfono</string>
+    <string name="field_password">Contraseña</string>
+    <string name="field_city">Ciudad</string>
+    <string name="field_commune">Comuna</string>
+
+    <!-- Verificación -->
+    <string name="verification_title">Verificación de conductor</string>
+    <string name="verification_current_status">Estado actual</string>
+    <string name="verification_unverified">Sin verificar</string>
+    <string name="verification_pending">Verificación en revisión</string>
+    <string name="verification_verified">Conductor verificado</string>
+    <string name="verification_rejected">Verificación rechazada</string>
+    <string name="verification_suspended">Cuenta suspendida</string>
+    <string name="verification_explanation">Para verificarte, adjunta evidencia de que trabajas como conductor (por ejemplo, una captura de tu perfil de conductor o tu licencia). Un moderador revisará la solicitud.</string>
+    <string name="verification_privacy">Tus documentos son privados: solo el equipo autorizado de DriverLink puede verlos y nunca se muestran a otros usuarios.</string>
+    <string name="verification_attach">Adjuntar evidencia</string>
+    <string name="verification_notes">Comentarios (opcional)</string>
+    <string name="verification_submit">Enviar solicitud</string>
+    <string name="verification_need_evidence">Adjunta al menos un archivo.</string>
+    <string name="verification_sent">Solicitud enviada. Te avisaremos cuando sea revisada.</string>
+
+    <!-- Navegación -->
+    <string name="tab_home">Inicio</string>
+    <string name="tab_map">Mapa</string>
+    <string name="tab_radio">Radio</string>
+    <string name="tab_chat">Chat</string>
+    <string name="tab_profile">Perfil</string>
+
+    <!-- Home -->
+    <string name="home_greeting">Hola, %1$s</string>
+    <string name="home_no_city">Ciudad no definida</string>
+    <string name="home_active_alerts_hint">Toca para verlas en el mapa</string>
+    <string name="home_verify_title">Verifica tu cuenta</string>
+    <string name="home_verify_body">Los conductores verificados generan más confianza en la comunidad.</string>
+    <string name="home_sos_button">SOS DRIVERLINK</string>
+    <string name="home_recent_alerts">Alertas recientes</string>
+    <string name="home_active_channels">Canales activos</string>
+
+    <!-- Comunidad / chat -->
+    <string name="space_community">Comunidad DriverLink</string>
+    <string name="space_company">Mi empresa</string>
+    <string name="channels_title">Canales</string>
+    <string name="channels_empty">No hay canales disponibles.</string>
+    <string name="channels_company_empty">No perteneces a ninguna empresa o aún no tienes canales.</string>
+    <string name="company_manage_spaces">Unirme o administrar empresas</string>
+    <string name="chat_title">Chat</string>
+    <string name="chat_empty">Aún no hay mensajes. ¡Escribe el primero!</string>
+    <string name="chat_input_hint">Escribe un mensaje</string>
+    <string name="chat_send_failed">No se pudo enviar el mensaje. Inténtalo de nuevo.</string>
+    <string name="chat_reply">Responder</string>
+    <string name="chat_replying_to">Respondiendo a %1$s: %2$s</string>
+    <string name="chat_message_deleted">Mensaje eliminado</string>
+    <string name="chat_message_options">Opciones del mensaje</string>
+    <string name="chat_block_user">Bloquear usuario</string>
+    <string name="message_status_pending">Enviando</string>
+    <string name="message_status_failed">Error al enviar</string>
+    <string name="message_status_sent">Enviado</string>
+    <string name="user_blocked">Bloqueaste a %1$s. Ya no verás sus mensajes.</string>
+
+    <!-- Radio -->
+    <string name="radio_title">Radio DriverLink</string>
+    <string name="radio_empty">Aún no hay audios en este canal.</string>
+    <string name="radio_hold_to_talk">MANTENER PARA HABLAR</string>
+    <string name="radio_release_to_finish">SUELTA PARA TERMINAR</string>
+    <string name="radio_state_idle">Listo para grabar</string>
+    <string name="radio_state_recording">Grabando</string>
+    <string name="radio_recording">Grabando… %1$s / %2$s</string>
+    <string name="radio_review">Audio de %1$s listo. ¿Enviar al canal?</string>
+    <string name="radio_uploading">Enviando audio…</string>
+    <string name="radio_cancel_recording">Cancelar grabación</string>
+    <string name="radio_too_short">El audio es demasiado corto.</string>
+    <string name="radio_record_error">No se pudo usar el micrófono.</string>
+    <string name="radio_play">Reproducir</string>
+    <string name="radio_pause">Pausar</string>
+
+    <!-- Mapa y alertas -->
+    <string name="map_title">Mapa de alertas</string>
+    <string name="map_not_configured">Mapa no configurado (falta MAPS_API_KEY). Mostrando alertas en lista.</string>
+    <string name="alerts_empty">No hay alertas activas en tu zona.</string>
+    <string name="alert_category_accident">Accidente</string>
+    <string name="alert_category_traffic">Congestión</string>
+    <string name="alert_category_road_closed">Ruta cerrada</string>
+    <string name="alert_category_danger">Peligro</string>
+    <string name="alert_category_security">Seguridad</string>
+    <string name="alert_category_road_problem">Problema vial</string>
+    <string name="alert_category_emergency">Emergencia</string>
+    <string name="alert_category_other">Otro</string>
+    <string name="alert_reported_ago">Reportado %1$s</string>
+    <string name="alert_vote_confirm">CONFIRMO</string>
+    <string name="alert_vote_ended">YA TERMINÓ</string>
+    <string name="alert_vote_incorrect">INCORRECTO</string>
+    <string name="alert_vote_thanks">¡Gracias! Tu opinión ayuda a la comunidad.</string>
+    <string name="alert_already_voted">Ya registraste tu opinión sobre esta alerta.</string>
+    <string name="alert_own">Esta alerta la publicaste tú.</string>
+    <string name="alert_see_detail">Ver detalle</string>
+    <string name="alert_detail_title">Detalle de alerta</string>
+    <string name="alert_detail_meta">%1$s · vigente hasta %2$s</string>
+    <string name="alert_detail_counts">Confirmaciones: %1$d · Terminó: %2$d · Incorrecta: %3$d</string>
+    <string name="alert_not_found">La alerta ya no está disponible.</string>
+    <string name="create_alert_title">Reportar</string>
+    <string name="create_alert_step_category">1. ¿Qué está pasando?</string>
+    <string name="create_alert_step_description">2. Descripción (opcional)</string>
+    <string name="create_alert_description_hint">Ej: choque en pista izquierda</string>
+    <string name="create_alert_step_location">3. Ubicación</string>
+    <string name="create_alert_locating">Obteniendo ubicación…</string>
+    <string name="create_alert_location_ready">Ubicación lista ✓</string>
+    <string name="create_alert_location_missing">Aún no tenemos tu ubicación.</string>
+    <string name="create_alert_use_location">Usar mi ubicación actual</string>
+    <string name="create_alert_confirm_title">¿Publicar alerta?</string>
+    <string name="create_alert_confirm_body">Se publicará una alerta de %1$s en tu ubicación actual. Se notificará a conductores de la zona.</string>
+
+    <!-- SOS -->
+    <string name="sos_title">SOS DriverLink</string>
+    <string name="sos_intro">Mantén presionado el botón durante 3 segundos para solicitar asistencia.</string>
+    <string name="sos_hold_hint">Mantener 3 s</string>
+    <string name="sos_hold_description">Botón SOS. Mantén presionado tres segundos para pedir asistencia.</string>
+    <string name="sos_choose_type">¿Qué tipo de emergencia?</string>
+    <string name="sos_type_robbery">Robo o asalto</string>
+    <string name="sos_type_accident">Accidente</string>
+    <string name="sos_type_passenger">Problema con pasajero</string>
+    <string name="sos_type_mechanical">Problema mecánico</string>
+    <string name="sos_type_medical">Emergencia médica</string>
+    <string name="sos_type_other">Otra emergencia</string>
+    <string name="sos_confirm_title">Confirmar SOS</string>
+    <string name="sos_confirm_body">Se enviará un SOS de tipo \"%1$s\" con tu ubicación al equipo de asistencia de DriverLink.</string>
+    <string name="sos_notes_optional">Notas (opcional)</string>
+    <string name="sos_send">ENVIAR SOS</string>
+    <string name="sos_sending">Enviando SOS…</string>
+    <string name="sos_not_sent">El SOS NO se envió</string>
+    <string name="sos_sent">SOS enviado</string>
+    <string name="sos_active_title">SOS activo</string>
+    <string name="sos_active_banner">Tienes un SOS activo</string>
+    <string name="sos_active_banner_body">Toca para ver su estado.</string>
+    <string name="sos_type_and_time">%1$s · %2$s</string>
+    <string name="sos_no_location">Enviado sin ubicación.</string>
+    <string name="sos_status_created">Buscando asistencia</string>
+    <string name="sos_status_received">Solicitud recibida</string>
+    <string name="sos_status_in_progress">En atención</string>
+    <string name="sos_status_resolved">Finalizada</string>
+    <string name="sos_status_cancelled">SOS cancelado</string>
+    <string name="sos_cancel">Cancelar SOS</string>
+    <string name="sos_cancel_confirm_title">¿Cancelar el SOS?</string>
+    <string name="sos_cancel_confirm_body">Cancela solo si ya no necesitas asistencia. Se dejará de compartir tu ubicación.</string>
+    <string name="sos_not_found">No encontramos este SOS.</string>
+    <string name="sos_locked_title">SOS DriverLink es una función Pro</string>
+    <string name="sos_official_title">Servicios oficiales</string>
+    <string name="sos_official_disclaimer">DriverLink no reemplaza a policía, ambulancia ni bomberos. Ante una situación grave, llama directamente.</string>
+    <string name="emergency_contacts_title">Contactos de emergencia</string>
+    <string name="contacts_locked_title">Los contactos de emergencia son parte de DriverLink Pro</string>
+    <string name="contacts_explanation">Personas de confianza que podrás llamar rápidamente durante un SOS.</string>
+    <string name="contacts_empty">Aún no agregas contactos.</string>
+    <string name="contacts_add">Agregar contacto</string>
+    <string name="contacts_name">Nombre</string>
+    <string name="contacts_relationship">Relación</string>
+    <string name="contacts_invalid">Ingresa nombre y un teléfono válido.</string>
+
+    <!-- Suscripción -->
+    <string name="subscription_title">Planes DriverLink</string>
+    <string name="subscription_current_plan">Tu plan actual</string>
+    <string name="subscription_until">Hasta el %1$s</string>
+    <string name="subscription_trial_started">¡Listo! Tu prueba de DriverLink Pro está activa.</string>
+    <string name="subscription_buy">Suscribirme por %1$s</string>
+    <string name="subscription_purchase_pending">Compra en proceso de validación.</string>
+    <string name="subscription_free_forever">Las funciones de comunidad son gratuitas para siempre, también al terminar una prueba Pro.</string>
+    <string name="plan_free">Comunidad (gratis)</string>
+    <string name="plan_trial">Prueba DriverLink Pro</string>
+    <string name="plan_pro">DriverLink Pro</string>
+    <string name="plan_expired">Pro finalizado · Comunidad</string>
+    <string name="plan_company">Plan empresa</string>
+    <string name="plan_community_title">Plan Comunidad</string>
+    <string name="plan_community_price">$0</string>
+    <string name="plan_pro_title">DriverLink Pro</string>
+    <string name="premium_locked_body">Activa DriverLink Pro para usar esta función. Chat, Radio, Mapa y Alertas siguen siendo gratuitos.</string>
+    <string name="premium_trial_ended">Tu período de DriverLink Pro terminó. Puedes continuar utilizando gratuitamente las funciones de comunidad.</string>
+    <string name="premium_see_plans">Ver planes</string>
+    <string name="feature_profile">Registro y perfil</string>
+    <string name="feature_chat">Chat comunitario</string>
+    <string name="feature_radio">Radio comunitaria</string>
+    <string name="feature_map">Mapa</string>
+    <string name="feature_alerts">Crear y confirmar alertas</string>
+    <string name="feature_basic_notifications">Notificaciones básicas</string>
+    <string name="feature_everything_free">Todo lo del plan Comunidad</string>
+    <string name="feature_sos">SOS DriverLink</string>
+    <string name="feature_emergency_contacts">Contactos de emergencia</string>
+    <string name="feature_assistance">Funciones adicionales de asistencia</string>
+
+    <!-- Perfil -->
+    <string name="profile_title">Perfil</string>
+    <string name="profile_photo">Foto de perfil</string>
+    <string name="profile_member_since">Miembro desde %1$s</string>
+    <string name="profile_reputation">Alertas creadas: %1$d · Confirmaciones: %2$d</string>
+    <string name="profile_edit">Editar perfil</string>
+    <string name="profile_change_photo">Cambiar foto</string>
+    <string name="profile_email_readonly">El correo no se puede cambiar desde la app.</string>
+    <string name="profile_subscription">Suscripción</string>
+    <string name="profile_help">Ayuda</string>
+    <string name="profile_sign_out">Cerrar sesión</string>
+    <string name="profile_delete_account">Eliminar cuenta</string>
+    <string name="profile_delete_confirm">Se eliminarán tu perfil, contactos y preferencias. Esta acción no se puede deshacer.</string>
+    <string name="help_body">¿Necesitas ayuda? Escríbenos a soporte@driverlink.cl. Ante una emergencia llama a Carabineros (133), Ambulancia (131) o Bomberos (132).</string>
+
+    <!-- Notificaciones -->
+    <string name="notifications_title">Notificaciones</string>
+    <string name="notifications_explanation">Elige qué avisos quieres recibir. Evitamos enviar notificaciones excesivas.</string>
+    <string name="notif_nearby_alerts">Nuevas alertas cercanas</string>
+    <string name="notif_replies">Respuestas a mis mensajes</string>
+    <string name="notif_channel_activity">Actividad de canales</string>
+    <string name="notif_sos_updates">Actualizaciones de SOS</string>
+    <string name="notif_admin">Información administrativa</string>
+    <string name="notif_subscription">Suscripción</string>
+    <string name="notif_channel_alerts">Alertas viales</string>
+    <string name="notif_channel_sos">SOS</string>
+    <string name="notif_channel_community">Comunidad</string>
+    <string name="notif_channel_general">General</string>
+    <string name="notif_channel_tracking">Ubicación compartida</string>
+    <string name="tracking_title">Compartiendo ubicación</string>
+    <string name="tracking_sos_text">Tu ubicación se comparte mientras el SOS esté activo.</string>
+    <string name="tracking_work_text">Tu ubicación operacional se comparte durante la jornada laboral.</string>
+
+    <!-- Privacidad y moderación -->
+    <string name="privacy_title">Privacidad</string>
+    <string name="privacy_what_is_public_title">Qué ven otros conductores</string>
+    <string name="privacy_what_is_public">Tu nombre, foto, ciudad, plataformas y estado de verificación. Tus mensajes y las alertas que publicas.</string>
+    <string name="privacy_never_public_title">Lo que nunca es público</string>
+    <string name="privacy_never_public">Documentos de identidad o verificación, dirección particular, teléfono, correo, información de pagos e información privada de otras plataformas.</string>
+    <string name="privacy_location_title">Tu ubicación</string>
+    <string name="privacy_location">No mostramos la ubicación de los conductores en el mapa comunitario. Solo se comparte durante un SOS activo o una jornada empresarial iniciada, y siempre lo verás indicado en una notificación.</string>
+    <string name="privacy_blocked_users">Usuarios bloqueados</string>
+    <string name="privacy_no_blocked">No has bloqueado a nadie.</string>
+    <string name="privacy_blocked_since">Bloqueado el %1$s</string>
+    <string name="report_title">Denunciar contenido</string>
+    <string name="report_details">Detalles (opcional)</string>
+    <string name="report_sent">Denuncia enviada. Gracias por cuidar la comunidad.</string>
+    <string name="report_reason_spam">Spam</string>
+    <string name="report_reason_harassment">Acoso</string>
+    <string name="report_reason_false_info">Información falsa</string>
+    <string name="report_reason_dangerous">Contenido peligroso</string>
+    <string name="report_reason_impersonation">Suplantación</string>
+    <string name="report_reason_other">Otro</string>
+
+    <!-- Empresa (DriverLink Flotas) -->
+    <string name="company_entry_title">DriverLink Flotas</string>
+    <string name="company_entry_intro">Usa la misma cuenta para la comunidad y para tu empresa. Los datos de la empresa son privados y separados de la comunidad.</string>
+    <string name="company_features_disabled">Las funciones de empresa no están disponibles por ahora.</string>
+    <string name="company_join">Unirme a una empresa</string>
+    <string name="company_create">Crear empresa</string>
+    <string name="company_my_companies">Mis empresas</string>
+    <string name="company_none">Aún no perteneces a ninguna empresa.</string>
+    <string name="company_rut">RUT de la empresa</string>
+    <string name="company_legal_name">Razón social</string>
+    <string name="company_trade_name">Nombre comercial</string>
+    <string name="company_address">Dirección</string>
+    <string name="company_create_note">Quedarás como dueño de la empresa. Podrás invitar conductores con un código; cada ingreso requiere tu aprobación.</string>
+    <string name="company_no_access">No tienes acceso a esta empresa.</string>
+    <string name="company_no_permission">Tu rol no permite ver esta sección.</string>
+    <string name="company_invite_code">Código de invitación</string>
+    <string name="company_invite_hint">Compártelo con tus conductores. Conocer el código no da acceso: debes aprobar cada solicitud.</string>
+    <string name="company_regenerate_code">Generar nuevo código</string>
+    <string name="company_channels">Canales privados</string>
+    <string name="company_members">Miembros</string>
+    <string name="company_vehicles">Vehículos</string>
+    <string name="company_role_owner">Dueño</string>
+    <string name="company_role_admin">Administrador</string>
+    <string name="company_role_supervisor">Supervisor</string>
+    <string name="company_role_dispatcher">Despachador</string>
+    <string name="company_role_driver">Conductor</string>
+    <string name="member_status_invited">Invitado</string>
+    <string name="member_status_pending">Pendiente de aprobación</string>
+    <string name="member_status_active">Activo</string>
+    <string name="member_status_suspended">Suspendido</string>
+    <string name="member_status_removed">Removido</string>
+    <string name="join_intro">Ingresa el código que te entregó tu empresa (formato DL-ABC-1234).</string>
+    <string name="join_code">Código de empresa</string>
+    <string name="join_submit">Enviar solicitud</string>
+    <string name="join_code_invalid">El código debe tener el formato DL-ABC-1234.</string>
+    <string name="join_request_sent">Solicitud enviada</string>
+    <string name="join_request_sent_body">Un administrador de la empresa debe aprobar tu ingreso. Te avisaremos cuando ocurra.</string>
+    <string name="work_session_title">Jornada laboral</string>
+    <string name="work_session_off">Fuera de jornada</string>
+    <string name="work_session_tracking_note">Al iniciar la jornada se comparte tu ubicación operacional con la empresa hasta que la finalices.</string>
+    <string name="work_session_start">INICIAR JORNADA</string>
+    <string name="work_session_end">FINALIZAR JORNADA</string>
+    <string name="work_session_since">Desde %1$s · %2$s</string>
+    <string name="duty_off">Fuera de servicio</string>
+    <string name="duty_on">En servicio</string>
+    <string name="duty_break">En pausa</string>
+    <string name="duty_emergency">Emergencia</string>
+    <string name="vehicles_empty">No hay vehículos registrados.</string>
+    <string name="vehicle_add">Agregar vehículo</string>
+    <string name="vehicle_plate">Patente</string>
+    <string name="vehicle_brand">Marca</string>
+    <string name="vehicle_model">Modelo</string>
+    <string name="vehicle_year">Año</string>
+    <string name="vehicle_invalid">Revisa patente, marca, modelo y año.</string>
+    <string name="vehicle_unassigned">Sin conductor asignado</string>
+    <string name="vehicle_assign_title">Asignar %1$s</string>
+    <string name="vehicle_type_car">Auto</string>
+    <string name="vehicle_type_van">Van</string>
+    <string name="vehicle_type_truck">Camión</string>
+    <string name="vehicle_type_motorcycle">Moto</string>
+    <string name="vehicle_type_other">Otro</string>
+
+    <!-- Tiempo -->
+    <string name="time_just_now">recién</string>
+    <plurals name="time_minutes_ago">
+        <item quantity="one">hace %d minuto</item>
+        <item quantity="other">hace %d minutos</item>
+    </plurals>
+    <plurals name="time_hours_ago">
+        <item quantity="one">hace %d hora</item>
+        <item quantity="other">hace %d horas</item>
+    </plurals>
+    <plurals name="time_days_ago">
+        <item quantity="one">hace %d día</item>
+        <item quantity="other">hace %d días</item>
+    </plurals>
+    <plurals name="alert_confirmations">
+        <item quantity="one">%d confirmación</item>
+        <item quantity="other">%d confirmaciones</item>
+    </plurals>
+    <plurals name="home_active_alerts">
+        <item quantity="one">%d alerta activa</item>
+        <item quantity="other">%d alertas activas</item>
+    </plurals>
+    <plurals name="subscription_days_left">
+        <item quantity="one">Queda %d día</item>
+        <item quantity="other">Quedan %d días</item>
+    </plurals>
+    <plurals name="subscription_start_trial">
+        <item quantity="one">Probar Pro gratis %d día</item>
+        <item quantity="other">Probar Pro gratis %d días</item>
+    </plurals>
+    <plurals name="verification_files">
+        <item quantity="one">%d archivo adjunto</item>
+        <item quantity="other">%d archivos adjuntos</item>
+    </plurals>
+</resources>

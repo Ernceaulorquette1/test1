@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Valores por defecto de Remote Config. Deben coincidir con AppConfig y con adminConfig/app. -->
+<defaultsMap>
+    <entry><key>trial_days</key><value>30</value></entry>
+    <entry><key>max_audio_duration_seconds</key><value>30</value></entry>
+    <entry><key>alert_expiration_minutes</key><value>{"ACCIDENT":90,"TRAFFIC":45,"ROAD_CLOSED":360,"DANGER":120,"SECURITY":120,"ROAD_PROBLEM":720,"EMERGENCY":60,"OTHER":60}</value></entry>
+    <entry><key>premium_price_display</key><value>$5.990 CLP / mes</value></entry>
+    <entry><key>sos_enabled</key><value>true</value></entry>
+    <entry><key>company_features_enabled</key><value>true</value></entry>
+    <entry><key>maintenance_mode</key><value>false</value></entry>
+    <entry><key>sos_hold_millis</key><value>3000</value></entry>
+    <entry><key>chat_page_size</key><value>30</value></entry>
+    <entry><key>alert_resolve_threshold</key><value>3</value></entry>
+    <entry><key>sos_location_interval_seconds</key><value>20</value></entry>
+    <entry><key>work_location_interval_seconds</key><value>60</value></entry>
+    <entry><key>official_services</key><value>[{"name":"Carabineros","number":"133"},{"name":"Ambulancia (SAMU)","number":"131"},{"name":"Bomberos","number":"132"},{"name":"PDI","number":"134"}]</value></entry>
+</defaultsMap>

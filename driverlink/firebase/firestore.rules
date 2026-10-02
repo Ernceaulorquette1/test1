@@ -1,0 +1,336 @@
+rules_version = '2';
+
+// =====================================================================================
+// DriverLink — Reglas de Firestore
+//
+// Principio: COMUNIDAD, EMPRESA, SOS y ADMINISTRACIÓN nunca comparten permisos.
+//  - Roles de plataforma (MODERATOR, ADMIN, SOS_OPERATOR) llegan como custom claims
+//    asignados solo por Cloud Functions (setUserRole). El cliente no puede auto-asignarse.
+//  - Suscripciones, verificación, reputación, contadores y SOS se escriben SOLO en servidor.
+//  - Los datos de empresa solo son visibles para miembros ACTIVE de esa empresa.
+// =====================================================================================
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------- Helpers ----------
+    function signedIn() { return request.auth != null; }
+    function uid() { return request.auth.uid; }
+    function platformRole() { return request.auth.token.get('role', 'DRIVER'); }
+    function isAdmin() { return signedIn() && platformRole() == 'ADMIN'; }
+    function isModerator() { return signedIn() && platformRole() in ['MODERATOR', 'ADMIN']; }
+    function isSosOperator() { return signedIn() && platformRole() in ['SOS_OPERATOR', 'ADMIN']; }
+    // Las cuentas suspendidas reciben el claim suspended=true (y se revocan sus tokens).
+    function canPost() { return signedIn() && request.auth.token.get('suspended', false) != true; }
+    function data() { return request.resource.data; }
+    function onlyChanges(keys) { return data().diff(resource.data).affectedKeys().hasOnly(keys); }
+    function isString(value, maxLen) { return value is string && value.size() <= maxLen; }
+    function nonEmpty(value, maxLen) { return value is string && value.size() > 0 && value.size() <= maxLen; }
+
+    function hasPremium() {
+      let sub = get(/databases/$(database)/documents/subscriptions/$(uid())).data;
+      return sub.status in ['TRIAL', 'PRO', 'COMPANY']
+        && (sub.get('expiresAt', null) == null || sub.expiresAt > request.time);
+    }
+
+    function memberPath(companyId) {
+      return /databases/$(database)/documents/companies/$(companyId)/members/$(uid());
+    }
+    function isActiveMember(companyId) {
+      return signedIn() && exists(memberPath(companyId)) && get(memberPath(companyId)).data.status == 'ACTIVE';
+    }
+    function hasCompanyRole(companyId, roles) {
+      return isActiveMember(companyId) && get(memberPath(companyId)).data.role in roles;
+    }
+
+    function validProfile(d) {
+      return nonEmpty(d.firstName, 50) && nonEmpty(d.lastName, 50)
+        && isString(d.phone, 20) && isString(d.city, 60) && isString(d.commune, 60)
+        && d.platforms is list && d.platforms.size() <= 4
+        && (d.photoUrl == null || isString(d.photoUrl, 1024));
+    }
+
+    function validNewMessage() {
+      let d = data();
+      return d.senderId == uid()
+        && d.createdAt == request.time
+        && d.keys().hasOnly(['senderId', 'senderName', 'senderPhotoUrl', 'type', 'text', 'audioUrl',
+                             'audioPath', 'audioDurationMs', 'replyToId', 'replyPreview', 'createdAt'])
+        && isString(d.senderName, 101)
+        && d.type in ['TEXT', 'AUDIO']
+        && (d.type != 'TEXT' || nonEmpty(d.text, 1000))
+        && (d.type != 'AUDIO' || (isString(d.audioUrl, 2048) && d.audioDurationMs is int && d.audioDurationMs <= 125000));
+    }
+
+    function validSoftDelete() {
+      return resource.data.senderId == uid()
+        && onlyChanges(['deletedAt', 'text'])
+        && data().deletedAt == request.time
+        && data().text == null;
+    }
+
+    // ---------- Usuarios ----------
+    match /users/{userId} {
+      // Perfil privado (correo, teléfono): solo el dueño y roles autorizados.
+      allow read: if signedIn() && (uid() == userId || isModerator() || isSosOperator());
+      // Alta: el usuario NO puede verificarse, darse Premium ni otro rol.
+      allow create: if signedIn() && uid() == userId
+        && data().keys().hasOnly(['firstName', 'lastName', 'email', 'phone', 'photoUrl', 'city', 'commune',
+                                  'platforms', 'verificationStatus', 'accountStatus', 'subscriptionStatus',
+                                  'role', 'createdAt', 'updatedAt'])
+        && data().verificationStatus == 'UNVERIFIED'
+        && data().accountStatus == 'ACTIVE'
+        && data().subscriptionStatus == 'FREE'
+        && data().role == 'DRIVER'
+        && data().email == request.auth.token.email
+        && validProfile(data());
+      // Edición: solo campos de perfil. Verificación, plan, rol y reputación los cambia el servidor.
+      allow update: if signedIn() && uid() == userId
+        && onlyChanges(['firstName', 'lastName', 'phone', 'photoUrl', 'city', 'commune', 'platforms', 'updatedAt'])
+        && validProfile(data());
+      allow delete: if false; // Cloud Function deleteAccount
+
+      match /emergencyContacts/{contactId} {
+        allow read, delete: if signedIn() && uid() == userId;
+        allow create, update: if signedIn() && uid() == userId && hasPremium()
+          && data().keys().hasOnly(['name', 'relationship', 'phone', 'updatedAt'])
+          && nonEmpty(data().name, 60) && isString(data().relationship, 40) && nonEmpty(data().phone, 20);
+      }
+
+      match /blockedUsers/{blockedId} {
+        allow read, delete: if signedIn() && uid() == userId;
+        allow create: if signedIn() && uid() == userId && blockedId != userId
+          && data().keys().hasOnly(['displayName', 'blockedAt'])
+          && isString(data().displayName, 101) && data().blockedAt == request.time;
+        allow update: if false;
+      }
+
+      match /devices/{token} {
+        allow read, write: if signedIn() && uid() == userId;
+      }
+    }
+
+    // Perfil público derivado (lo mantiene la Cloud Function onUserWritten).
+    match /publicProfiles/{userId} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    // Verificación: documentos privados, revisión solo por moderación.
+    match /verificationRequests/{userId} {
+      allow read: if signedIn() && (uid() == userId || isModerator());
+      allow create: if signedIn() && uid() == userId
+        && data().userId == userId && data().status == 'PENDING'
+        && data().keys().hasOnly(['userId', 'status', 'notes', 'evidencePaths', 'submittedAt'])
+        && isString(data().notes, 500) && data().evidencePaths is list && data().evidencePaths.size() <= 3;
+      // Reenvío permitido solo tras un rechazo.
+      allow update: if signedIn() && uid() == userId && resource.data.status == 'REJECTED'
+        && data().status == 'PENDING'
+        && onlyChanges(['status', 'notes', 'evidencePaths', 'submittedAt'])
+        && isString(data().notes, 500) && data().evidencePaths is list && data().evidencePaths.size() <= 3;
+      allow delete: if false;
+    }
+
+    match /platforms/{platformId} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    // Vínculos con plataformas externas: solo los crea el servidor tras una integración autorizada.
+    match /userPlatforms/{linkId} {
+      allow read: if signedIn() && resource.data.userId == uid();
+      allow write: if false;
+    }
+
+    match /adminConfig/{configId} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    // ---------- Comunidad ----------
+    match /channels/{channelId} {
+      allow read: if signedIn();
+      allow write: if false; // gestión por administración (backend)
+
+      match /messages/{messageId} {
+        allow read: if signedIn();
+        allow create: if canPost() && validNewMessage();
+        allow update: if canPost() && validSoftDelete();
+        allow delete: if false;
+      }
+    }
+
+    // Preferencias por canal (silenciar/favorito). Documento: {channelId}_{uid}
+    match /channelMembers/{membershipId} {
+      allow read, delete: if signedIn() && resource.data.userId == uid();
+      allow create, update: if signedIn() && data().userId == uid()
+        && membershipId == data().channelId + '_' + uid()
+        && data().keys().hasOnly(['userId', 'channelId', 'muted', 'favorite', 'updatedAt']);
+    }
+
+    match /alerts/{alertId} {
+      allow read: if signedIn();
+      // Contadores en 0, estado ACTIVE y vencimiento acotado; el servidor lo normaliza.
+      allow create: if canPost()
+        && data().creatorId == uid()
+        && data().keys().hasOnly(['creatorId', 'creatorName', 'category', 'description', 'latitude', 'longitude',
+                                  'city', 'commune', 'status', 'confirmationsCount', 'endedCount',
+                                  'incorrectCount', 'createdAt', 'updatedAt', 'expiresAt'])
+        && data().category in ['ACCIDENT', 'TRAFFIC', 'ROAD_CLOSED', 'DANGER', 'SECURITY', 'ROAD_PROBLEM', 'EMERGENCY', 'OTHER']
+        && data().status == 'ACTIVE'
+        && data().confirmationsCount == 0 && data().endedCount == 0 && data().incorrectCount == 0
+        && isString(data().description, 280) && isString(data().creatorName, 101)
+        && isString(data().city, 60) && isString(data().commune, 60)
+        && data().latitude is number && data().latitude >= -90 && data().latitude <= 90
+        && data().longitude is number && data().longitude >= -180 && data().longitude <= 180
+        && data().createdAt == request.time
+        && data().expiresAt is timestamp
+        && data().expiresAt > request.time
+        && data().expiresAt <= request.time + duration.value(24, 'h');
+      // Solo moderación puede ocultar o corregir alertas.
+      allow update: if isModerator();
+      allow delete: if false;
+
+      // Un voto por usuario: el ID del documento ES el uid y no se permite update.
+      match /confirmations/{voterId} {
+        allow read: if signedIn() && (voterId == uid() || isModerator());
+        allow create: if canPost() && voterId == uid()
+          && data().keys().hasOnly(['vote', 'userId', 'createdAt'])
+          && data().userId == uid()
+          && data().vote in ['CONFIRM', 'ENDED', 'INCORRECT']
+          && data().createdAt == request.time
+          && get(/databases/$(database)/documents/alerts/$(alertId)).data.creatorId != uid()
+          && get(/databases/$(database)/documents/alerts/$(alertId)).data.status == 'ACTIVE';
+        allow update, delete: if false;
+      }
+    }
+
+    // ---------- SOS (información restringida) ----------
+    match /sosEvents/{sosId} {
+      allow read: if signedIn() && (resource.data.userId == uid() || isSosOperator());
+      allow create: if false; // Cloud Function createSosEvent (valida Premium)
+      // El dueño solo puede actualizar su ubicación mientras el SOS está activo.
+      allow update: if signedIn() && resource.data.userId == uid()
+        && resource.data.status in ['CREATED', 'RECEIVED', 'IN_PROGRESS']
+        && onlyChanges(['latitude', 'longitude', 'locationUpdatedAt'])
+        && data().latitude is number && data().longitude is number
+        && data().locationUpdatedAt == request.time;
+      allow delete: if false;
+
+      match /operatorNotes/{noteId} {
+        allow read: if isSosOperator();
+        allow write: if false; // Cloud Function updateSosEvent
+      }
+    }
+
+    // ---------- Moderación ----------
+    match /reports/{reportId} {
+      allow create: if canPost()
+        && data().reporterId == uid()
+        && data().keys().hasOnly(['reporterId', 'targetType', 'targetId', 'targetOwnerId', 'reason', 'details',
+                                  'contextPath', 'status', 'createdAt'])
+        && data().targetType in ['USER', 'MESSAGE', 'AUDIO', 'ALERT']
+        && data().reason in ['SPAM', 'HARASSMENT', 'FALSE_INFORMATION', 'DANGEROUS_CONTENT', 'IMPERSONATION', 'OTHER']
+        && data().status == 'OPEN'
+        && isString(data().details, 300)
+        && data().createdAt == request.time;
+      allow read, update: if isModerator();
+      allow delete: if false;
+    }
+
+    // ---------- Suscripciones y preferencias ----------
+    match /subscriptions/{userId} {
+      allow read: if signedIn() && (uid() == userId || isAdmin());
+      allow write: if false; // nunca desde el cliente: startTrial / verifyPlayPurchase
+    }
+
+    match /notificationPreferences/{userId} {
+      allow read: if signedIn() && uid() == userId;
+      allow write: if signedIn() && uid() == userId
+        && data().keys().hasOnly(['categories', 'updatedAt'])
+        && data().categories is map;
+    }
+
+    // ---------- Empresas (DriverLink Flotas) ----------
+    match /companies/{companyId} {
+      // Miembros (incluso PENDING) ven el nombre de la empresa; nadie más.
+      allow read: if signedIn() && exists(memberPath(companyId));
+      allow create: if false; // Cloud Function createCompany
+      allow update: if hasCompanyRole(companyId, ['OWNER'])
+        && onlyChanges(['tradeName', 'email', 'phone', 'address', 'updatedAt']);
+      allow delete: if false;
+
+      // Código de invitación: solo administradores de la empresa.
+      match /private/{docId} {
+        allow read: if hasCompanyRole(companyId, ['OWNER', 'ADMIN']);
+        allow write: if false;
+      }
+
+      match /members/{memberId} {
+        allow read: if signedIn()
+          && (memberId == uid() || hasCompanyRole(companyId, ['OWNER', 'ADMIN', 'SUPERVISOR', 'DISPATCHER']));
+        allow write: if false; // requestJoinCompany / reviewJoinRequest
+      }
+
+      match /channels/{channelId} {
+        allow read: if isActiveMember(companyId);
+        allow create, update: if hasCompanyRole(companyId, ['OWNER', 'ADMIN']);
+        allow delete: if false;
+
+        match /messages/{messageId} {
+          allow read: if isActiveMember(companyId);
+          allow create: if isActiveMember(companyId) && validNewMessage();
+          allow update: if isActiveMember(companyId) && validSoftDelete();
+          allow delete: if false;
+        }
+      }
+
+      match /vehicles/{vehicleId} {
+        allow read: if isActiveMember(companyId);
+        allow create: if hasCompanyRole(companyId, ['OWNER', 'ADMIN'])
+          && nonEmpty(data().plate, 8) && vehicleId == data().plate
+          && data().type in ['CAR', 'VAN', 'TRUCK', 'MOTORCYCLE', 'OTHER'];
+        allow update: if hasCompanyRole(companyId, ['OWNER', 'ADMIN', 'SUPERVISOR']);
+        allow delete: if hasCompanyRole(companyId, ['OWNER', 'ADMIN']);
+      }
+
+      match /vehicleAssignments/{assignmentId} {
+        allow read: if hasCompanyRole(companyId, ['OWNER', 'ADMIN', 'SUPERVISOR', 'DISPATCHER']);
+        allow create: if hasCompanyRole(companyId, ['OWNER', 'ADMIN', 'SUPERVISOR']);
+        allow update, delete: if false;
+      }
+
+      match /workSessions/{sessionId} {
+        allow read: if isActiveMember(companyId)
+          && (resource.data.userId == uid() || hasCompanyRole(companyId, ['OWNER', 'ADMIN', 'SUPERVISOR', 'DISPATCHER']));
+        allow create: if isActiveMember(companyId)
+          && data().userId == uid() && data().status == 'ON_DUTY'
+          && data().endedAt == null && data().startedAt == request.time;
+        allow update: if isActiveMember(companyId)
+          && resource.data.userId == uid() && resource.data.endedAt == null
+          && onlyChanges(['status', 'endedAt', 'lastLatitude', 'lastLongitude', 'lastLocationAt'])
+          && data().status in ['ON_DUTY', 'BREAK', 'EMERGENCY', 'OFF_DUTY'];
+        allow delete: if false;
+
+        // Ubicación operacional: solo durante una jornada abierta del propio conductor.
+        match /locationUpdates/{updateId} {
+          allow read: if hasCompanyRole(companyId, ['OWNER', 'ADMIN', 'SUPERVISOR', 'DISPATCHER']);
+          allow create: if isActiveMember(companyId)
+            && get(/databases/$(database)/documents/companies/$(companyId)/workSessions/$(sessionId)).data.userId == uid()
+            && get(/databases/$(database)/documents/companies/$(companyId)/workSessions/$(sessionId)).data.endedAt == null
+            && data().latitude is number && data().longitude is number && data().createdAt == request.time;
+          allow update, delete: if false;
+        }
+      }
+    }
+
+    // Consulta de "mis membresías" (collection group). Solo las propias.
+    match /{path=**}/members/{memberId} {
+      allow read: if signedIn() && resource.data.userId == uid();
+    }
+
+    // Códigos de invitación: solo servidor.
+    match /companyInvites/{code} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,5 +1,7 @@
 # 🍏 NutriScan AI
 
+> **Nuevo proyecto en este repositorio:** [`driverlink/`](driverlink/README.md) — **DriverLink Chile**, app Android (Kotlin + Jetpack Compose + Firebase) para conductores de aplicaciones de transporte.
+
 **Tu asistente inteligente de nutrición.** Escanea tus comidas, calcula calorías y nutrientes al instante con inteligencia artificial.
 
 NutriScan AI es una aplicación móvil comercial (Android / Google Play) que reconoce alimentos a partir de fotografías, estima porciones y calcula calorías y macronutrientes, con historial, estadísticas, chat nutricional con IA, escáner de código de barras, registro de agua y planes Premium por suscripción.
