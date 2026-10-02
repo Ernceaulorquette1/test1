@@ -1,0 +1,31 @@
+# Gradle / Android Studio
+.gradle/
+build/
+/local.properties
+.idea/
+*.iml
+.DS_Store
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+!gradle/wrapper/gradle-wrapper.jar
+
+# Secretos: NUNCA versionar
+app/google-services.json
+*.jks
+*.keystore
+keystore.properties
+service-account*.json
+.env
+.env.*
+
+# Firebase
+firebase/.firebaserc
+firebase/functions/node_modules/
+firebase/functions/lib/
+firebase/rules-tests/node_modules/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log

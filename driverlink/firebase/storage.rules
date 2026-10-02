@@ -1,0 +1,54 @@
+rules_version = '2';
+
+// DriverLink — Reglas de Cloud Storage
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function signedIn() { return request.auth != null; }
+    function platformRole() { return request.auth.token.get('role', 'DRIVER'); }
+    function isOwner(userId) { return signedIn() && request.auth.uid == userId; }
+
+    // Fotos de perfil: públicas para usuarios autenticados, escritura solo del dueño.
+    match /profilePhotos/{userId}/{fileName} {
+      allow read: if signedIn();
+      allow write: if isOwner(userId)
+        && request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+
+    // Evidencia de verificación: PRIVADA. El dueño sube, solo moderación/admin puede leer.
+    match /verification/{userId}/{fileName} {
+      allow create: if isOwner(userId)
+        && request.resource.size < 10 * 1024 * 1024
+        && (request.resource.contentType.matches('image/.*') || request.resource.contentType == 'application/pdf');
+      allow read: if signedIn() && platformRole() in ['MODERATOR', 'ADMIN'];
+      allow update, delete: if false;
+    }
+
+    // Radio comunitaria: audios cortos y comprimidos (< 1 MB).
+    match /audio/community/{channelId}/{userId}/{fileName} {
+      allow read: if signedIn();
+      allow create: if isOwner(userId)
+        && request.auth.token.get('suspended', false) != true
+        && request.resource.size < 1024 * 1024
+        && request.resource.contentType.matches('audio/.*');
+      allow update, delete: if false;
+    }
+
+    // Radio de empresa: solo miembros ACTIVE de la empresa (consulta cruzada a Firestore).
+    match /audio/companies/{companyId}/{channelId}/{userId}/{fileName} {
+      allow read: if signedIn()
+        && firestore.get(/databases/(default)/documents/companies/$(companyId)/members/$(request.auth.uid)).data.status == 'ACTIVE';
+      allow create: if isOwner(userId)
+        && firestore.get(/databases/(default)/documents/companies/$(companyId)/members/$(request.auth.uid)).data.status == 'ACTIVE'
+        && request.resource.size < 1024 * 1024
+        && request.resource.contentType.matches('audio/.*');
+      allow update, delete: if false;
+    }
+
+    // Todo lo demás está cerrado.
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
