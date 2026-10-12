@@ -1,0 +1,30 @@
+:root {
+  --ps-navy: #0b1f3a; --ps-navy-2: #12305a; --ps-green: #1fbf75; --ps-yellow: #f5b301; --ps-red: #e5484d; --ps-gray: #6b7a90;
+  --bs-primary: #12305a; --bs-primary-rgb: 18, 48, 90; --bs-success: #1fbf75; --bs-success-rgb: 31, 191, 117;
+  --bs-warning: #f5b301; --bs-danger: #e5484d; --bs-link-color: #12305a;
+}
+[data-bs-theme="dark"] {
+  --bs-body-bg: #0a1626; --bs-body-color: #e6edf7; --bs-tertiary-bg: #10233b; --bs-border-color: #22395a;
+  --bs-primary: #5b9bf5; --bs-primary-rgb: 91, 155, 245; --bs-link-color: #8cb8f8; --ps-gray: #9fb0c8;
+}
+body { background: var(--bs-body-bg); }
+.btn-primary { --bs-btn-bg: var(--ps-navy-2); --bs-btn-border-color: var(--ps-navy-2); --bs-btn-hover-bg: var(--ps-navy); --bs-btn-hover-border-color: var(--ps-navy); }
+[data-bs-theme="dark"] .btn-primary { --bs-btn-bg: #2f6fd6; --bs-btn-border-color: #2f6fd6; --bs-btn-hover-bg: #2a5fb8; }
+.btn-success { --bs-btn-bg: var(--ps-green); --bs-btn-border-color: var(--ps-green); --bs-btn-color: #04230f; --bs-btn-hover-color: #04230f; }
+.ps-navbar { background: var(--ps-navy); }
+.ps-navbar .nav-link, .ps-navbar .navbar-brand { color: #dce6f5 !important; }
+.ps-navbar .nav-link.active { color: #fff !important; border-bottom: 2px solid var(--ps-green); }
+.ps-card { border: 1px solid var(--bs-border-color); border-radius: 14px; background: var(--bs-body-bg); }
+.ps-card.clickable:hover { box-shadow: 0 4px 16px rgba(11, 31, 58, .14); transform: translateY(-1px); transition: .15s; }
+.ps-hero { background: linear-gradient(135deg, var(--ps-navy) 0%, var(--ps-navy-2) 100%); color: #fff; border-radius: 18px; }
+.ps-muted { color: var(--ps-gray); }
+.ps-badge-team { width: 36px; height: 36px; border-radius: 50%; background: var(--ps-navy-2); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: .75rem; flex: none; }
+.ps-prob { height: 10px; border-radius: 6px; background: var(--bs-tertiary-bg); overflow: hidden; }
+.ps-prob > span { display: block; height: 100%; border-radius: 6px; }
+.ps-prob .hi { background: var(--ps-green); } .ps-prob .mid { background: var(--ps-yellow); } .ps-prob .lo { background: var(--ps-gray); }
+.ps-demo-banner { background: #fff4d6; color: #5c4300; font-size: .85rem; }
+[data-bs-theme="dark"] .ps-demo-banner { background: #3a2f0c; color: #ffe29a; }
+.ps-locked { position: relative; border: 1px dashed var(--ps-yellow); border-radius: 12px; }
+.skip-link { position: absolute; left: -999px; } .skip-link:focus { left: 8px; top: 8px; z-index: 9999; background: #fff; padding: 8px; }
+:focus-visible { outline: 3px solid var(--ps-yellow); outline-offset: 2px; }
+.table-sm td, .table-sm th { vertical-align: middle; }

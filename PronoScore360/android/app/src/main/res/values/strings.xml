@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PronoScore360</string>
+    <string name="disclaimer">Estimaciones estadísticas informativas. No garantizan resultados. PronoScore360 no permite apuestas.</string>
+    <string name="demo_banner">Modo DEMO: los datos deportivos son ficticios.</string>
+    <string name="notif_channel">Alertas de partidos</string>
+</resources>

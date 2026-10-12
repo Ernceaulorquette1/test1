@@ -1,0 +1,21 @@
+name: PronoScore360 dependencias y secretos
+on:
+  schedule: [{ cron: "17 5 * * 1" }]
+  workflow_dispatch:
+  pull_request:
+    paths: ["PronoScore360/backend/requirements*.txt", "PronoScore360/web/package*.json", "PronoScore360/android/**/*.kts"]
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13" }
+      - run: pip install pip-audit && pip-audit -r PronoScore360/backend/requirements.txt
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: cd PronoScore360/web && npm audit --audit-level=high
+      - name: Buscar secretos versionados
+        run: |
+          ! git ls-files | grep -E '(^|/)\.env$|\.jks$|\.keystore$|service-account.*\.json$'
+          ! git grep -nE '(AIza[0-9A-Za-z_-]{35}|-----BEGIN (RSA )?PRIVATE KEY-----)' -- . ':!*.md'

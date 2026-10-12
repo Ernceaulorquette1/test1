@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     env: Literal["local", "test", "staging", "production"] = "local"
     database_url: str = "postgresql+psycopg://pronoscore:pronoscore@localhost:5432/pronoscore"
     redis_url: str = ""                      # vacío => caché/limitador en memoria (sólo local/test)
-    cors_origins: str = "http://localhost:5173,http://localhost:3000"
+    cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000"
 
     # --- seguridad ---
     jwt_secret: str = DEFAULT_DEV_SECRET

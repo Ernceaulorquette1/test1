@@ -22,9 +22,9 @@ web/dist/
 web/coverage/
 
 # Android
-android/.gradle/
-android/build/
-android/app/build/
+android/**/build/
+.gradle/
+**/.gradle/
 *.apk
 *.aab
 
@@ -33,3 +33,6 @@ android/app/build/
 .vscode/
 .DS_Store
 *.log
+
+# El wrapper de Gradle SÍ se versiona
+!android/gradle/wrapper/gradle-wrapper.jar
