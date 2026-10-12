@@ -36,3 +36,4 @@ android/**/build/
 
 # El wrapper de Gradle SÍ se versiona
 !android/gradle/wrapper/gradle-wrapper.jar
+.kotlin/
