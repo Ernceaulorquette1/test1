@@ -1,0 +1,39 @@
+# Secretos
+.env
+.env.*
+!.env.example
+*.keystore
+*.jks
+keystore.properties
+google-play-service-account*.json
+local.properties
+
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+
+# Node / web
+node_modules/
+web/dist/
+web/coverage/
+
+# Android
+android/**/build/
+.gradle/
+**/.gradle/
+*.apk
+*.aab
+
+# IDE / SO
+.idea/
+.vscode/
+.DS_Store
+*.log
+
+# El wrapper de Gradle SÍ se versiona
+!android/gradle/wrapper/gradle-wrapper.jar
+.kotlin/

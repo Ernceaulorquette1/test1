@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SÓLO DEBUG: permite HTTP al backend local (emulador 10.0.2.2 / red local para teléfono físico). No se incluye en release. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>

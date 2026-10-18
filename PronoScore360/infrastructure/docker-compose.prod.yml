@@ -1,0 +1,50 @@
+# Producción de referencia (UN servidor). Requiere: dominio apuntando al servidor, .env.prod con secretos reales.
+#   docker compose -f infrastructure/docker-compose.prod.yml --env-file .env.prod up -d --build
+# Caddy obtiene y renueva certificados HTTPS (Let's Encrypt) automáticamente. NO probado en este entorno (sin Docker daemon).
+name: pronoscore360-prod
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment: { POSTGRES_USER: "${POSTGRES_USER}", POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}", POSTGRES_DB: "${POSTGRES_DB}" }
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck: { test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"], interval: 10s, timeout: 5s, retries: 10 }
+    # Sin 'ports': PostgreSQL no se expone fuera de la red interna. Respaldos: ver docs/PUBLICACION_WEB.md
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes: [redisdata:/data]
+  api:
+    build: { context: .., dockerfile: backend/Dockerfile }
+    restart: unless-stopped
+    env_file: [../.env.prod]
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      REDIS_URL: redis://redis:6379/0
+      SCHEDULER_ENABLED: "false"        # el scheduler corre en 'worker'
+      SEED_DEMO_ON_START: "false"
+    depends_on: { db: { condition: service_healthy }, redis: { condition: service_started } }
+  worker:
+    build: { context: .., dockerfile: backend/Dockerfile }
+    restart: unless-stopped
+    env_file: [../.env.prod]
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      REDIS_URL: redis://redis:6379/0
+      SCHEDULER_ENABLED: "true"
+    command: ["python", "-m", "app.worker"]
+    depends_on: { api: { condition: service_started } }
+  web:
+    build:
+      context: ../web
+      args: { VITE_API_URL: "https://${API_DOMAIN}/api/v1" }
+    restart: unless-stopped
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports: ["80:80", "443:443"]
+    environment: { WEB_DOMAIN: "${WEB_DOMAIN}", API_DOMAIN: "${API_DOMAIN}" }
+    volumes: [./Caddyfile:/etc/caddy/Caddyfile:ro, caddydata:/data, caddyconfig:/config]
+    depends_on: [api, web]
+volumes: { pgdata: {}, redisdata: {}, caddydata: {}, caddyconfig: {} }
